@@ -1,0 +1,4 @@
+User_Alias	PACUSER	= tomato
+Cmnd_Alias	PACMAN	= /bin/pacman
+
+PACUSER	ALL=(root) NOPASSWD: PACMAN
