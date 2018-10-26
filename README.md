@@ -40,6 +40,16 @@ The host can be updated with [pacman update command]:
 
 > `pacman -Syu`
 
+#### Update the tomato repository then the host in one shot
+
+[tomato] provides a shortcut to update the host right after refreshing the tomato repository:
+
+> `tomato -Syu`
+
+Which is a an alias to:
+
+> `pacman -Syuw && tomato refresh && pacman -Syu`
+
 ### List tomato repository packages
 
 To list the packages explicitly included to the [tomato] repository:
