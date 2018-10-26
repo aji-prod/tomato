@@ -55,6 +55,24 @@ To list all packages and versions available from the [tomato] repository:
 
 > `tomato search packagedesc`
 
+## Configuration
+
+[tomato] provides some defaults to tell how to bind the [Docker volumes] with the host, and can be overridden with a [key=value configuration file] using:
+
+  * The `tomato --tomato-config=tomato.conf` flag,
+  * Editing the `/etc/tomato.conf` file,
+  * Or setting a local user configuration at `~/.config/tomato.conf`.
+
+The default settings are defined as:
+```sh
+TOMATO_NAME=tomato              # The tomato's docker image
+TOMATO_IMGDIR=/usr/share/tomato # The tomato's docker files
+TOMATO_PKGDIR=/var/pkg/tomato   # The tomato's repository directory
+TOMATO_PACDIR=/etc/pacman.d     # The host's mirrorlist directory
+TOMATO_MAKEPKGCONF=             # Let to use a specific makepkg.conf
+TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg # The pacman's cache directory
+```
+
 ## Licenses
 
 > As most of the used tools have a [GPLv2], [GPLv3] or a [compatible license](https://www.gnu.org/licenses/license-list.html#apache2), [tomato] follows the same path.
@@ -70,10 +88,12 @@ To list all packages and versions available from the [tomato] repository:
   [AUR packages]: https://www.archlinux.org/packages/
   [AUR]: https://aur.archlinux.org/
   [ArchLinux]: https://www.archlinux.org/
+  [Docker volumes]: https://docs.docker.com/storage/volumes/
   [Docker]: https://docs.docker.com/
   [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
   [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
   [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
+  [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
   [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
   [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
   [pacman uninstall command]: https://wiki.archlinux.org/index.php/Pacman#Removing_packages
