@@ -16,6 +16,10 @@ The selection of [AUR packages] can be installed by a common [pacman usage] on t
 
 ## Manage AUR packages
 
+### Search for an AUR package to include in the tomato repository
+
+> `tomato search packagedesc`
+
 ### Include an AUR package to the tomato repository
 
 > `tomato add packagename`
@@ -59,11 +63,6 @@ To list the packages explicitly included to the [tomato] repository:
 To list all packages and versions available from the [tomato] repository:
 
 > `tomato list all`
-
-
-### Search for an AUR package to include in the tomato repository
-
-> `tomato search packagedesc`
 
 ## Configuration
 
