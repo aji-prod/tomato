@@ -1,0 +1,153 @@
+#!/bin/sh
+NAME=${0:-tomato}
+readonly NAME
+
+TOMATO_NAME="${TOMATO_NAME:-tomato}"
+TOMATO_PKGDIR="${TOMATO_PKGDIR:-/var/pkg/tomato}"
+TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato}"
+TOMATO_PACDIR="${TOMATO_PACDIR:-/etc/pacman.d}"
+TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
+TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
+
+_error(){
+	echo $* 1>&2
+	exit 1
+}
+
+_hint(){
+	echo $* 1>&2
+}
+
+_loadconf(){
+	# see: https://web.archive.org/web/20180406004235/
+	#      http://mywiki.wooledge.org:80/BashFAQ/024
+	if test -f "$1";
+	then
+		_hint "Loading config from $1"
+		while IFS== read -r v;
+		do
+			if $(echo $v | grep -q -s -E -e "^[A-Z_]+=.*$");
+			then
+				_hint  $v
+				export $v
+			fi
+		done < "$1"
+	fi
+}
+
+_volume(){
+	if test -n "$1";
+	then
+		echo -n " -v $1:$2 "
+	fi
+}
+
+_volumes(){
+	_volume "${TOMATO_PKGDIR}" "/var/pkg/tomato"
+	_volume "${TOMATO_PACDIR}" "/etc/pacman.d:ro"
+	_volume "${TOMATO_PKGCACHEDIR}" "/var/cache/pacman/pkg"
+	_volume "${TOMATO_MAKEPKGCONF}" "/home/tomato/makepkg.conf"
+}
+
+_dockerd(){
+	pidof dockerd 1> /dev/null 2> /dev/null ||
+	_error "The Docker deamon is not running, " \
+	       "you can try to run \`systemctl start docker\` " \
+	       "before using ${NAME^}".
+}
+
+_docker(){
+	_dockerd && /usr/bin/docker $@
+}
+
+_build(){
+	test -n "${TOMATO_IMGDIR}" ||
+	_error "The TOMATO_IMGDIR is not set, " \
+	       "check your environment variable, or your tomato.conf file; " \
+	       "this variable locates where the Dockerfile and its assets " \
+	       "are."
+
+	_docker build --rm --quiet --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+}
+
+_run(){
+	vol=$(_volumes)
+	_docker run --rm --interactive $vol "${TOMATO_NAME}" $@
+}
+
+_environment(){
+	load=("/etc/tomato.conf" "${HOME}/.config/tomato.conf")
+	for at in ${load};
+	do
+		test -f "${at}" && _loadconfig "${at}"
+	done
+}
+
+_options(){
+	# out
+	args=()
+	rebuild=0
+	update=0
+	# flags
+	i=0
+	loadconf=0
+
+	for arg in $@;
+	do
+		case ${arg} in
+			--rebuild-image)
+				rebuild=1
+				;;
+			--tomato-config=*)
+				_loadconf "${arg#--tomato-config=}"
+				;;
+			--tomato-config)
+				loadconf=1
+				;;
+			-Syu)
+				update=1
+				;;
+			*)
+				if test ${loadconf} -eq 1;
+				then
+					loadconf=0
+					_loadconf "${arg}"
+				else
+					args[$i]="${arg}"
+					i=$(( $i + 1 ))
+				fi
+				;;
+		esac
+	done
+
+	export args
+	export rebuild
+	export update
+}
+
+main(){
+	_environment
+	_options $@
+
+	if test ${rebuild} -eq 1;
+	then
+		_build
+
+		if test ${#args[@]} -eq 0;
+		then
+			_hint "${TOMATO_NAME} image rebuilt."
+			return 0 # shortcut
+		fi
+	fi
+
+	# -- Pass all to the docker image
+	if test ${update} -eq 1;
+	then
+		pacman -Syuuw && _run ${args} && pacman -Syuu
+	else
+		_run ${args}
+	fi
+}
+
+main $@
+exit $?
