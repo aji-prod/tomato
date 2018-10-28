@@ -1,5 +1,5 @@
 #!/bin/sh
-NAME=${0:-tomato}
+NAME=$(basename ${0:-tomato})
 readonly NAME
 
 TOMATO_NAME="${TOMATO_NAME:-tomato}"
@@ -8,6 +8,13 @@ TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato}"
 TOMATO_PACDIR="${TOMATO_PACDIR:-/etc/pacman.d}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
+
+# The configuration documentation ensures that the TOMATO_NAME can never be
+# set as blank, let to enforce that.
+if test -z "${TOMATO_NAME}"
+then
+	TOMATO_NAME="${NAME}"
+fi
 
 _error(){
 	echo $* 1>&2
