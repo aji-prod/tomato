@@ -250,11 +250,16 @@ EOF
 }
 
 version(){
-	/usr/bin/uname    -a &&
-	/usr/bin/pacman   -V &&
-	"${AUR}" -V          &&
-	/usr/bin/repose   -V &&
-	_version
+	case "$1" in
+		number)
+			echo "${VERSION}";;
+		*)
+			/usr/bin/uname    -a &&
+			/usr/bin/pacman   -V &&
+			"${AUR}" -V          &&
+			/usr/bin/repose   -V &&
+			_version;;
+	esac
 }
 
 list(){
@@ -315,7 +320,7 @@ main(){
 			shift; refresh $@
 			;;
 		version|-V)
-			version
+			version $2
 			;;
 		usage|help|-h|--help)
 			usage
