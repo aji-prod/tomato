@@ -194,9 +194,9 @@ main(){
 	# -- Pass all to the docker image
 	if test ${update} -eq 1;
 	then
-		pacman -Syuuw && _tomato ${args} && pacman -Syuu
+		pacman -Syuuw && _tomato ${args[@]} && pacman -Syuu
 	else
-		_tomato ${args}
+		_tomato ${args[@]}
 	fi
 }
 
