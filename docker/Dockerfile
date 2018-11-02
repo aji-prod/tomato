@@ -43,7 +43,8 @@ RUN tar -xf pikaur.tar.gz                                              && \
     cd pikaur                                                          && \
     sudo pacman -Syuu --noconfirm --noprogressbar --needed             && \
     makepkg --nocolor --noprogressbar --nodeps                         && \
-    sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.xz
+    sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.xz && \
+    cd && rm -rf pikaur*
 
 COPY --chown=tomato pikaur.conf .config/pikaur.conf
 COPY --chown=tomato tomato.sh .
