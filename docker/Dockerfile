@@ -52,4 +52,4 @@ RUN chmod u+x tomato.sh
 COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 
 ENTRYPOINT ["/home/tomato/tomato.sh"]
-CMD ["-V"]
+CMD ["help"]
