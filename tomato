@@ -110,8 +110,16 @@ _run(){
 	_error "The ${NAME^}'s Docker image is not yet built, " \
 	       "re-run the command with the --rebuild-image flag."
 
+	tty=""
+	if test "$1" = "--tty";
+	then
+		tty="$1"
+		shift
+	fi
+
 	vol=$(_volumes)
-	_docker run --rm --interactive $vol "${TOMATO_NAME}" $@
+
+	_docker run --rm --interactive $tty $vol "${TOMATO_NAME}" $@
 }
 
 _tomato(){
@@ -121,7 +129,9 @@ _tomato(){
 	      "version ${ver} found instead of ${VERSION}; " \
 	      "use the --rebuild-image flag with the next command to upgrade."
 
-	_run $@
+	# pass the --tty option here only, and do not include in the _run()
+	# command as the $(_run version number) will be scrambled.
+	_run --tty $@
 }
 
 _environment(){
