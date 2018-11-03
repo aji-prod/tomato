@@ -103,11 +103,10 @@ _build(){
 }
 
 _run(){
-	# Use "docker images" with grep instead of "docker image history"
-	# alone to inhibit any error outputs from docker,
-	# we can't catch 2> here due to _docker 
-	_docker images --format="{{.Repository}}" "${TOMATO_NAME}" |
-	grep -q -s -e "${TOMATO_NAME}" ||
+	image=$(_docker images --format="{{.Repository}}" "${TOMATO_NAME}") ||
+		exit $?
+
+	test "${image}" = "${TOMATO_NAME}" ||
 	_error "The ${NAME^}'s Docker image is not yet built, " \
 	       "re-run the command with the --rebuild-image flag."
 
