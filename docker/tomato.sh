@@ -238,7 +238,7 @@ operations:
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
   ${NAME} list    [all]          # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
-  ${NAME} version                # show version v${VERSION};
+  ${NAME} version [number]       # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
 
 options:
