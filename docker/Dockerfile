@@ -1,4 +1,4 @@
-FROM base/archlinux
+FROM archlinux/base
 
 # Prerequists
 VOLUME /etc/pacman.d
@@ -6,7 +6,8 @@ VOLUME /var/cache/pacman
 # Note: One more volume available, declared later, as:
 #       VOLUME /var/pkg/tomato
 
-RUN pacman -Syuu --noconfirm --noprogressbar --needed            && \
+RUN pacman-key --init && pacman-key --populate                   && \
+    pacman -Syuu --noconfirm --noprogressbar --needed            && \
     pacman -S    --noconfirm --noprogressbar --needed base-devel    \
                                                       python        \
                                                       repose
