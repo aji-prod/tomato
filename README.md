@@ -14,6 +14,27 @@ As such [tomato] is not a [pacman wrapper], it is more an indirect [AUR helper].
 
 The selection of [AUR packages] can be installed by a common [pacman usage] on the host.
 
+## Usage
+
+```sh
+usage: tomato [<options>] <operation> [...]
+
+operations:
+  tomato add      <package(s)>  # add a package to the maintained list;
+  tomato del      <package(s)>  # remove a package from the maintained list;
+  tomato refresh [<package(s)>] # update tomato repository;
+  tomato list    [all]          # list maintained packages;
+  tomato search   <package(s)>  # search an AUR package;
+  tomato version [number]       # show version 0.1.0;
+  tomato (usage|help)           # this help message.
+
+options:
+  tomato --rebuild-image        # build or rebuild the tomato Docker image;
+  tomato --tomato-config <path> # path to custom tomato config.
+
+  Tomato v0.1.0
+```
+
 ## Manage AUR packages
 
 ### Search for an AUR package to include in the tomato repository
