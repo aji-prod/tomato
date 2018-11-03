@@ -82,6 +82,11 @@ TOMATO_MAKEPKGCONF=             # Let to use a specific makepkg.conf
 TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg # The pacman's cache directory
 ```
 
+## GPG Signatures
+
+For now, neither the [GPG signatures] from the [AUR packages] nor to build a package are supported and ignored.
+
+
 ## Licenses
 
 > As most of the used tools have a [GPLv2], [GPLv3] or a [compatible license](https://www.gnu.org/licenses/license-list.html#apache2), [tomato] follows the same path.
@@ -99,6 +104,7 @@ TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg # The pacman's cache directory
   [ArchLinux]: https://www.archlinux.org/
   [Docker volumes]: https://docs.docker.com/storage/volumes/
   [Docker]: https://docs.docker.com/
+  [GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
   [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
   [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
   [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
