@@ -78,7 +78,7 @@ _volumes(){
 	_volume "${TOMATO_PKGDIR}" "/var/pkg/tomato"
 	_volume "${TOMATO_PACDIR}" "/etc/pacman.d:ro"
 	_volume "${TOMATO_PKGCACHEDIR}" "/var/cache/pacman/pkg"
-	_volume "${TOMATO_MAKEPKGCONF}" "/home/tomato/makepkg.conf"
+	_volume "${TOMATO_MAKEPKGCONF}" "/home/tomato/makepkg.conf:ro"
 }
 
 _dockerd(){
