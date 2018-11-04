@@ -14,7 +14,7 @@
   - [X] Volumes
   - [X] Tomato's image
   - [ ] Default makepkg.conf/packager
-  - [ ] Why tomato as command name?
+  - [X] Why tomato as command name?
 
 ## 0.2.0
 

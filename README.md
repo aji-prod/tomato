@@ -144,6 +144,14 @@ A special volume which needs to points to a host _file_ to be used, always mount
 
 > not mounted by default
 
+## Tomato's Name
+
+The [tomato name] is a reference to a main character of the [Cowboy Bebop] series, [Edward Wong Hau Pepelu Tivrusky IV].
+
+> Her best friend during her time [in an orphanage on Earth] was a boy named Tomato who was also passionate about computer science. She named her computer Tomato after him.[^](http://cowboybebop.wikia.com/wiki/Edward#Early_Life)
+
+Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
+
 ## Licenses
 
 > As most of the used tools have a [GPLv2], [GPLv3] or a [compatible license](https://www.gnu.org/licenses/license-list.html#apache2), [tomato] follows the same path.
@@ -160,9 +168,11 @@ A special volume which needs to points to a host _file_ to be used, always mount
   [AUR]: https://aur.archlinux.org/
   [ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
   [ArchLinux]: https://www.archlinux.org/
+  [Cowboy Bebop]: https://en.wikipedia.org/wiki/Cowboy_Bebop
   [Docker image]: https://docs.docker.com/engine/docker-overview/#docker-objects
   [Docker volumes]: https://docs.docker.com/storage/volumes/
   [Docker]: https://docs.docker.com/
+  [Edward Wong Hau Pepelu Tivrusky IV]: http://cowboybebop.wikia.com/wiki/Edward
   [GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
   [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
   [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
@@ -179,4 +189,5 @@ A special volume which needs to points to a host _file_ to be used, always mount
   [pacman]: https://wiki.archlinux.org/index.php/Pacman
   [pikaur]: https://github.com/actionless/pikaur
   [repose]: https://github.com/vodik/repose
+  [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
   [tomato]: https://github.com/aji-prod/tomato
