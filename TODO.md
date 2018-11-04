@@ -11,8 +11,8 @@
 
 ### README.md
 
-  - [ ] Volumes
-  - [ ] Tomato's image
+  - [X] Volumes
+  - [X] Tomato's image
   - [ ] Default makepkg.conf/packager
   - [ ] Why tomato as command name?
 

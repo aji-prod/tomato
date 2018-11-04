@@ -1,5 +1,5 @@
 <!--
-vi:wrap:linebreak:nolist:
+vi:wrap:linebreak:nolist:spell:spelllang=en:
 -->
 # tomato
 
@@ -108,6 +108,42 @@ TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg # The pacman's cache directory
 For now, neither the [GPG signatures] from the [AUR packages] nor to build a package are supported and ignored.
 
 
+## Docker Image
+
+[tomato] uses a local [Docker image] based against the official [ArchLinux Docker image].
+
+Before using the first time [tomato], it is required to build the local [Docker image] with the `--rebuild-image` option, as `tomato --rebuild-image [command]`.
+
+The [tomato]'s core resides in the script launched inside the [Docker image], any [tomato] update will only be available after passing the `--rebuild-image` option. It is also recommended to pass this option each new month as the official [ArchLinux Docker image] is updated monthly.
+
+### Docker Volumes
+
+[tomato] binds a few [Docker volumes] to share files between the host and the image.
+
+#### Volume `/var/pkg/tomato`
+
+The repository and the packages are stored in this volume, always mounted with _read_ and _write_ permissions.
+
+> host default: `/etc/pkg/tomato`
+
+#### Volume `/var/cache/pacman/pkg`
+
+To minimize the network access, the image shares the same [pacman's cache] with the host.
+
+> host default: `/var/cache/pacman/pkg`
+
+#### Volume `/etc/pacman.d`
+
+The [mirrorlist] used by the image is read from this volume, always mounted with a _read only_ permission.
+
+> host default: `/etc/pacman.d`.
+
+#### Volume `/home/tomato/makepkg.conf`
+
+A special volume which needs to points to a host _file_ to be used, always mounted with a _read only_ permission.
+
+> not mounted by default
+
 ## Licenses
 
 > As most of the used tools have a [GPLv2], [GPLv3] or a [compatible license](https://www.gnu.org/licenses/license-list.html#apache2), [tomato] follows the same path.
@@ -122,7 +158,9 @@ For now, neither the [GPG signatures] from the [AUR packages] nor to build a pac
   [AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
   [AUR packages]: https://www.archlinux.org/packages/
   [AUR]: https://aur.archlinux.org/
+  [ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
   [ArchLinux]: https://www.archlinux.org/
+  [Docker image]: https://docs.docker.com/engine/docker-overview/#docker-objects
   [Docker volumes]: https://docs.docker.com/storage/volumes/
   [Docker]: https://docs.docker.com/
   [GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
@@ -130,12 +168,14 @@ For now, neither the [GPG signatures] from the [AUR packages] nor to build a pac
   [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
   [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
   [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
+  [mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
   [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
   [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
   [pacman uninstall command]: https://wiki.archlinux.org/index.php/Pacman#Removing_packages
   [pacman update command]: https://wiki.archlinux.org/index.php/Pacman#Upgrading_packages
   [pacman usage]: https://wiki.archlinux.org/index.php/Pacman#Usage
   [pacman wrapper]: https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers
+  [pacman's cache]: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
   [pacman]: https://wiki.archlinux.org/index.php/Pacman
   [pikaur]: https://github.com/actionless/pikaur
   [repose]: https://github.com/vodik/repose
