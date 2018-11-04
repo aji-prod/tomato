@@ -2,7 +2,7 @@ FROM archlinux/base
 
 # Prerequists
 VOLUME /etc/pacman.d
-VOLUME /var/cache/pacman
+VOLUME /var/cache/pacman/pkg
 # Note: One more volume available, declared later, as:
 #       VOLUME /var/pkg/tomato
 
