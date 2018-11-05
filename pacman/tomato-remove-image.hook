@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Remove
+Type = Package
+Target = tomato
+
+[Action]
+Description = Remove the tomato docker image.
+Depends = docker
+When = PreTransaction
+Exec = /usr/bin/tomato --remove-image

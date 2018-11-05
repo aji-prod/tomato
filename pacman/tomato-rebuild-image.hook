@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = tomato
+
+[Action]
+Description = Update tomato docker image.
+Depends = docker
+When = PostTransaction
+Exec = /usr/bin/tomato --rebuild-image
