@@ -102,6 +102,10 @@ _build(){
 	_docker build --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
 }
 
+_remove(){
+	_docker image rm "${TOMATO_NAME}"
+}
+
 _run(){
 	image=$(_docker images --format="{{.Repository}}" "${TOMATO_NAME}") ||
 		exit $?
@@ -148,6 +152,7 @@ _options(){
 	args=()
 	rebuild=0
 	update=0
+	remove=0
 	# flags
 	i=0
 	loadconf=0
@@ -157,6 +162,9 @@ _options(){
 		case ${arg} in
 			--rebuild-image)
 				rebuild=1
+				;;
+			--remove-image)
+				remove=1
 				;;
 			--tomato-config=*)
 				_loadconf "${arg#--tomato-config=}"
@@ -181,6 +189,7 @@ _options(){
 	done
 
 	export args
+	export remove
 	export rebuild
 	export update
 }
@@ -189,19 +198,24 @@ main(){
 	_environment
 	_options $@
 
+	quitifnoargs=0
+	if test ${remove} -eq 1;
+	then
+		_remove && _hint "${TOMATO_NAME} image removed."
+		quitifnoargs=1
+
+	fi
 	if test ${rebuild} -eq 1;
 	then
-		_build
-
-		if test ${#args[@]} -eq 0;
-		then
-			_hint "${TOMATO_NAME} image rebuilt."
-			return 0 # shortcut
-		fi
+		_build && _hint "${TOMATO_NAME} image rebuilt."
+		quitifnoargs=1
 	fi
 
-	# -- Pass all to the docker image
-	if test ${update} -eq 1;
+	if test ${#args[@]} -eq 0 -a ${quitifnoargs} -eq 1;
+	then
+		# no arguments provided, exit here
+		return 0
+	elif test ${update} -eq 1;
 	then
 		pacman -Syuuw && _tomato ${args[@]} && pacman -Syuu
 	else

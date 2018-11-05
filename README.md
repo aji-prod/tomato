@@ -30,6 +30,7 @@ operations:
 
 options:
   tomato --rebuild-image        # build or rebuild the tomato Docker image;
+  tomato --remove-image         # remove the tomato Docker image;
   tomato --tomato-config <path> # path to custom tomato config.
 
   Tomato v0.1.0
@@ -115,6 +116,18 @@ For now, neither the [GPG signatures] from the [AUR packages] nor to build a pac
 Before using the first time [tomato], it is required to build the local [Docker image] with the `--rebuild-image` option, as `tomato --rebuild-image [command]`.
 
 The [tomato]'s core resides in the script launched inside the [Docker image], any [tomato] update will only be available after passing the `--rebuild-image` option. It is also recommended to pass this option each new month as the official [ArchLinux Docker image] is updated monthly.
+
+### Initializing the Docker Image
+
+> `tomato --rebuild-image`
+
+The `--rebuild-image` option can be combined with any other flags or commands.
+
+### Pruning the Docker Image
+
+> `tomato --remove-image`
+
+Will ask [Docker] do delete the [Docker image], can be combined with any other flags and takes precedence over the `--rebuild-image` option.
 
 ### Docker Volumes
 

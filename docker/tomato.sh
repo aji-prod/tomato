@@ -243,6 +243,7 @@ operations:
 
 options:
   ${NAME} --rebuild-image        # build or rebuild the ${NAME} Docker image;
+  ${NAME} --remove-image         # remove the ${NAME} Docker image;
   ${NAME} --tomato-config <path> # path to custom ${NAME} config.
 
   ${NAME^} v${VERSION}
