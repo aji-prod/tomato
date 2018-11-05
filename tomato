@@ -11,6 +11,8 @@ TOMATO_PACDIR="${TOMATO_PACDIR:-/etc/pacman.d}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
 
+PACMAN=${PACMAN:-pacman}
+
 # The configuration documentation ensures that the TOMATO_NAME can never be
 # set as blank, let to enforce that.
 if test -z "${TOMATO_NAME}"
@@ -217,7 +219,7 @@ main(){
 		return 0
 	elif test ${update} -eq 1;
 	then
-		pacman -Syuuw && _tomato ${args[@]} && pacman -Syuu
+		${PACMAN} -Syuuw && _tomato ${args[@]} && ${PACMAN} -Syuu
 	else
 		_tomato ${args[@]}
 	fi
