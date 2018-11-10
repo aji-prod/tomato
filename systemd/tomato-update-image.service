@@ -1,0 +1,11 @@
+# vi:ft=systemd.service:
+[Unit]
+Description=update and rebuild tomato's docker image.
+Requires=docker.service
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/usr/share/tomato/tomato-update.conf
+EnvironmentFile=-/etc/conf.d/tomato-update.conf
+ExecStart=/usr/bin/tomato --rebuild-image ${TOMATO_ARGS}

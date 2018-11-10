@@ -1,0 +1,11 @@
+# vi:ft=systemd.service:
+[Unit]
+Description=update tomato packages and repository.
+Requires=docker.service
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/usr/share/tomato/tomato-update.conf
+EnvironmentFile=-/etc/conf.d/tomato-update.conf
+ExecStart=/usr/bin/tomato refresh ${TOMATO_ARGS}

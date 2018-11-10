@@ -5,8 +5,8 @@
   - [ ] README.md
   - [ ] PKGBUILD
   - [X] tomato.hook to rebuild image
-  - [ ] systemd timer to rebuild image
-  - [ ] systemd timer to refresh repository
+  - [X] systemd timer to rebuild image
+  - [X] systemd timer to refresh repository
   - [ ] command auto completion
 
 ### README.md

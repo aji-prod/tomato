@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly tomato repository refresh
+
+[Timer]
+AccuracySec=6h
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

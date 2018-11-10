@@ -1,0 +1,11 @@
+[Unit]
+Description=Monthly tomato image update
+
+[Timer]
+AccuracySec=1d
+OnCalendar=monthly
+Persistent=true
+RandomizedDelaySec=1d
+
+[Install]
+WantedBy=timers.target
