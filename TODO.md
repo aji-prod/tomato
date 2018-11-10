@@ -24,3 +24,7 @@
 ## 0.3.0
 
   - [ ] Support GPG signature as a packager.
+
+## 0.4.0
+
+  - [ ] Refresh only required packages.
