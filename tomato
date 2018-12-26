@@ -144,7 +144,7 @@ _environment(){
 	load=("/etc/tomato.conf" "${HOME}/.config/tomato.conf")
 	for at in ${load};
 	do
-		test -f "${at}" && _loadconfig "${at}"
+		test -f "${at}" && _loadconf "${at}"
 	done
 }
 
