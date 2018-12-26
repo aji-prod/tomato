@@ -158,6 +158,7 @@ _options(){
 	# flags
 	i=0
 	loadconf=0
+	version=0
 
 	for arg in $@;
 	do
@@ -177,6 +178,9 @@ _options(){
 			-Syu)
 				update=1
 				;;
+			-VV)
+				version=1
+				;;
 			*)
 				if test ${loadconf} -eq 1;
 				then
@@ -194,11 +198,18 @@ _options(){
 	export remove
 	export rebuild
 	export update
+	export version
 }
 
 main(){
 	_environment
 	_options $@
+
+	if test ${version} -eq 1;
+	then
+		echo $VERSION
+		return 0
+	fi
 
 	quitifnoargs=0
 	if test ${remove} -eq 1;
