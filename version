@@ -3,8 +3,8 @@
 source ./PKGBUILD
 PKGVER="${pkgver}"
 
-DKRVER=$(sh ./docker/tomato.sh version number)
-TMTVER=$(sh ./tomato -VV)
+DKRVER=$(sh ./docker/tomato.sh version number 2> /dev/null)
+TMTVER=$(sh ./tomato -VV 2> /dev/null)
 
 ret=0
 
