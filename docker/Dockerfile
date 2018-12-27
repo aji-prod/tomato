@@ -1,10 +1,19 @@
 FROM archlinux/base
 
-# Prerequists
-VOLUME /etc/pacman.d
-VOLUME /var/cache/pacman/pkg
-# Note: One more volume available, declared later, as:
-#       VOLUME /var/pkg/tomato
+# Volume:
+# 	Let to share a same mirrorlist
+VOLUME ["/etc/pacman.d"]
+# 	As the we will mount the /etc/pacman.d read-only,
+# 	to to have a subvolume writeable (not mounted),
+# 	to avoid any gpg issue while updating.
+VOLUME ["/etc/pacman.d/gnupg"]
+# 	The don't have the same hooks from the host
+# 	let to have a subvolume wich hand the hook's host
+VOLUME ["/etc/pacman.d/hooks"]
+# 	Let to share the same writeable pacman's cache from the host
+VOLUME ["/var/cache/pacman/pkg"]
+# 	Publish to the host our packages
+VOLUME ["/var/pkg/tomato"]
 
 RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
     > /etc/pacman.d/mirrorlist                                       && \
@@ -28,8 +37,6 @@ RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
 RUN useradd -m tomato            && \
     mkdir -p /var/pkg/tomato     && \
     chown tomato /var/pkg/tomato
-VOLUME /var/pkg/tomato
-VOLUME /home/tomato/makepkg.conf
 COPY pacman.sudoer /etc/sudoers.d/pacman
 
 # Everything from now is done from the tomato home dir with the tomato user.
