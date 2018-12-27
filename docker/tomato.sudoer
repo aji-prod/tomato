@@ -1,0 +1,4 @@
+User_Alias	TOMUSER	= tomato
+Cmnd_Alias	TOMATO	= /home/tomato/tomato.sh
+
+TOMUSER	ALL=(root) NOPASSWD: TOMATO

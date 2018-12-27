@@ -8,7 +8,7 @@ REPOLST="${REPODIR}/${NAME}.pkglist"
 REPODB="${NAME}"
 KEYSLST="${REPODIR}/${NAME}.gpglist"
 
-PKGDIR="$HOME/.cache/pikaur/pkg"
+PKGDIR="$(echo ~tomato)/.cache/pikaur/pkg"
 PKGGLOB=*.pkg.tar.*
 
 AURFLAGS="${PACFLAGS:- --needed --noprogressbar --noconfirm}"
@@ -92,11 +92,27 @@ _rmglob(){
 	test ! -d $1 || find "$1" -xdev -type f -name "$2" -delete
 }
 
+_copymod(){
+	test -n "$1" -a -n "$2"     &&
+	chmod --reference="$1" "$2" &&
+	chown --reference="$1" "$2"
+}
+
+_tomato(){
+	user=tomato
+	group=$(/bin/id -g -n tomato)
+	sudo -u "${user}" -g "${group}" -- $@
+}
+
+_aur(){
+	_tomato "${AUR}" $@
+}
+
 # -- Environment
 _upgrade(){
-	"$AUR" -Sy   $AURFLAGS        &&
-	"$AUR" -S    $AURFLAGS pikaur &&
-	"$AUR" -Syuu $AURFLAGS        &&
+	_aur -Sy   $AURFLAGS        &&
+	_aur -S    $AURFLAGS pikaur &&
+	_aur -Syuu $AURFLAGS        &&
 	# cleanup pikaur build for futher package registration
 	_rmglob "$PKGDIR" "$PKGGLOB"
 }
@@ -114,6 +130,7 @@ _pinpkgs(){
 	_join '\n' $@                              |
 	cat -- ${REPOLST} -                        |
 	LC_ALL="C" sort -u -- > "${REPOLST}.tmp"  &&
+	_copymod "${REPOLST}" "${REPOLST}.tmp"    &&
 	mv -f -T -- "${REPOLST}.tmp" "${REPOLST}" &&
 	cat -- "${REPOLST}"
 }
@@ -121,10 +138,11 @@ _pinpkgs(){
 _unpinpkgs(){
 	pkgs=$( _join '|' $(_safere $@) )
 
-	test -f "${REPOLST}"        &&
-	cat     -- "${REPOLST}"      |
-	sed -E "s/^${pkgs}$//"       |
-	awk 'NF' > "${REPOLST}.tmp" &&
+	test -f "${REPOLST}"                      &&
+	cat     -- "${REPOLST}"                    |
+	sed -E "s/^${pkgs}$//"                     |
+	awk 'NF' > "${REPOLST}.tmp"               &&
+	_copymod "${REPOLST}" "${REPOLST}.tmp"    &&
 	mv -f -T -- "${REPOLST}.tmp" "${REPOLST}" &&
 	cat -- "${REPOLST}"
 }
@@ -153,7 +171,7 @@ _makepkgs(){
 	#       and can't check unknown GPK keys;
 	#       for now we are ignoring GPG signatures with makepkg.
 	_makepkgconf
-	"${AUR}" -S $AURFLAGS --mflags=--skippgpcheck $@
+	_aur -S $AURFLAGS --mflags=--skippgpcheck $@
 }
 
 _pushpkgs(){
@@ -268,7 +286,7 @@ list(){
 }
 
 search(){
-	"${AUR}" -Ss --aur -- $@
+	_aur -Ss --aur -- $@
 }
 
 add(){
@@ -327,7 +345,7 @@ main(){
 			usage
 			;;
 		exec) # not documented
-			shift; $@
+			shift; _tomato $@
 			;;
 		*)
 			echo "Operation \"${NAME} $1\" not supported," \
