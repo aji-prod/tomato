@@ -8,6 +8,8 @@
   - [X] systemd timer to rebuild image
   - [X] systemd timer to refresh repository
   - [ ] command auto completion
+    + [X] bash completion
+    + [ ] zsh completion
 
 ### README.md
 
