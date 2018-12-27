@@ -119,12 +119,15 @@ _run(){
 	tty=""
 	if test "$1" = "--tty";
 	then
-		tty="$1"
+		# activate the --tty option only when an stdin is available
+		if test -t 0;
+		then
+			tty="$1"
+		fi
 		shift
 	fi
 
 	vol=$(_volumes)
-
 	_docker run --rm --interactive $tty $vol "${TOMATO_NAME}" $@
 }
 
