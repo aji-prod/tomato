@@ -34,10 +34,9 @@ RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
 # Note: Why tomato?
 #       Tomato is the computer, and a friend from earth,
 #       of Ed from Cowboy Bebop.
-RUN useradd -m tomato            && \
-    mkdir -p /var/pkg/tomato     && \
-    chown tomato /var/pkg/tomato
+RUN useradd -m tomato
 COPY pacman.sudoer /etc/sudoers.d/pacman
+COPY tomato.sudoer /etc/sudoers.d/tomato
 
 # Everything from now is done from the tomato home dir with the tomato user.
 USER tomato
@@ -61,5 +60,7 @@ COPY --chown=tomato tomato.sh .
 RUN chmod u+x tomato.sh
 COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 
-ENTRYPOINT ["/home/tomato/tomato.sh"]
+VOLUME ["/home/tomato/makepkg.conf"]
+
+ENTRYPOINT [ "/bin/sudo", "/home/tomato/tomato.sh" ]
 CMD ["help"]
