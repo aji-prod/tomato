@@ -6,10 +6,12 @@ VOLUME /var/cache/pacman/pkg
 # Note: One more volume available, declared later, as:
 #       VOLUME /var/pkg/tomato
 
-RUN pacman-key --init && pacman-key --populate                   && \
-    pacman -Syuu --noconfirm --noprogressbar --needed            && \
-    pacman -S    --noconfirm --noprogressbar --needed base-devel    \
-                                                      python        \
+RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
+    > /etc/pacman.d/mirrorlist                                       && \
+    pacman-key --init && pacman-key --populate                       && \
+    pacman -Syuu --noconfirm --noprogressbar --needed                && \
+    pacman -S    --noconfirm --noprogressbar --needed base-devel        \
+                                                      python            \
                                                       repose
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
