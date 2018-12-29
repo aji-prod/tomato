@@ -149,7 +149,7 @@ _unpinpkgs(){
 
 _knownpkgs(){
 	pkgs=$( _join '|' $(_safere $@) )
-	cat -- "${REPOLST}" | grep -x -E "$pkgs"
+	cat -- "${REPOLST}" | grep -x -E -- "$pkgs"
 }
 
 # -- Package Install
