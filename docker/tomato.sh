@@ -198,7 +198,7 @@ _removedb(){
 	       --root="${REPODIR}" \
 	       --pool="${REPODIR}" \
 	       --drop              \
-	       "${REPODB}" $@
+	       "${REPODB}" -- $@
 }
 
 _listdb(){
