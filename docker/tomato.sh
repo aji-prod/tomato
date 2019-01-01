@@ -40,6 +40,12 @@ _join(){
 	done
 }
 
+_hasstr(){
+	test -n "$1" -a -n "$2" &&
+	echo $1 | grep -F -e "$2" -q -s
+}
+
+
 _safere(){
 	for arg in $@;
 	do
@@ -208,6 +214,65 @@ _listdb(){
 	       "${REPODB}"
 }
 
+_statusdb(){
+	if test -z "$1";
+	then
+		_hint -n "Checking packages status"
+	fi
+
+	IFS=$'\n' packages=( $(_listdb) )
+	for package in ${packages[@]};
+	do
+		IFS=$' ' package=(${package})
+		pkgname=${package[0]}
+		pkgver=${package[1]}
+
+		aurlog=$(_aur -Si --aur --name-only "${pkgname}")
+		aurscm=$(echo ${pkgname}       | grep -o -E -e '-(git|hg|svn|bzr)$')
+		aurversion=$(echo ${aurlog}    | grep Version     | awk -F ': ' '{printf $2}')
+		auroutofdate=$(echo ${aurlog}  | grep Out-of-date | awk -F ': ' '{printf $2}')
+		aurmaintainer=$(echo ${aurlog} | grep Maintainer  | awk -F ': ' '{printf $2}')
+		
+		pkgstatus="" # Up-to-date
+		if test -z "${aurversion}";
+		then
+			pkgstatus="Removed"
+		elif test "${aurmaintainer}" = "None";
+		then
+			pkgstatus="Orphan"
+		elif test "${auroutofdate}" != "None";
+		then
+			pkgstatus="Out-of-date"
+		elif test -n "${aurscm}";
+		then
+			pkgstatus="Rolling-update"
+		elif test "${aurversion}" != "${pkgver}"
+		then
+			pkgstatus="Pending-update"
+		fi
+
+		if test -n "$1"
+		then
+			_hasstr "${pkgstatus}" "$1" && echo "${pkgname}"
+		else
+			_hint -n "."
+			echo "${pkgstatus},${pkgname},${pkgver},${aurversion}"
+		fi
+	done
+
+	if test -z "$1";
+	then
+		_hint "."
+	fi
+
+	return 0 # FIXME: success detection
+}
+
+_reportdb(){
+	header="Status,Package Name,${NAME^} Version,AUR Version"
+	_statusdb | column --table --table-columns "${header}" --separator ','
+}
+
 # -- Tomato
 _version(){
 	pacman=$(/usr/bin/pacman -Q pacman)
@@ -282,7 +347,14 @@ version(){
 }
 
 list(){
-	test "x$1" = "xall" && _listdb || _listpkgs
+	case "$1" in
+		all)
+			_reportdb;;
+		"")
+			_listpkgs;;
+		*)
+			_statusdb "$1";;
+	esac
 }
 
 search(){
