@@ -23,7 +23,7 @@ operations:
   tomato add      <package(s)>  # add a package to the maintained list;
   tomato del      <package(s)>  # remove a package from the maintained list;
   tomato refresh [<package(s)>] # update tomato repository;
-  tomato list    [all]          # list maintained packages;
+  tomato list    [all|status]   # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
   tomato version [number]       # show version 0.1.0;
   tomato (usage|help)           # this help message.
@@ -85,6 +85,10 @@ To list the packages explicitly included to the [tomato] repository:
 To list all packages and versions available from the [tomato] repository:
 
 > `tomato list all`
+
+To list all packages available from the [tomato] repository with theirs [AUR status]:
+
+> `tomato list status`
 
 ## Configuration
 
@@ -178,6 +182,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
   [AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
   [AUR packages]: https://www.archlinux.org/packages/
+  [AUR status]: https://aur.archlinux.org/packages/?K=status&SB=m&SO+=+d
   [AUR]: https://aur.archlinux.org/
   [ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
   [ArchLinux]: https://www.archlinux.org/

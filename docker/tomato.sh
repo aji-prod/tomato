@@ -319,7 +319,7 @@ operations:
   ${NAME} add      <package(s)>  # add a package to the maintained list;
   ${NAME} del      <package(s)>  # remove a package from the maintained list;
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
-  ${NAME} list    [all]          # list maintained packages;
+  ${NAME} list    [all|status]   # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
   ${NAME} version [number]       # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
@@ -349,6 +349,8 @@ version(){
 list(){
 	case "$1" in
 		all)
+			_listdb;;
+		status)
 			_reportdb;;
 		"")
 			_listpkgs;;
