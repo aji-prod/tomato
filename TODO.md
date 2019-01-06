@@ -29,4 +29,4 @@
 
 ## 0.4.0
 
-  - [ ] Refresh only required packages.
+  - [X] Refresh only required packages.

@@ -383,10 +383,11 @@ del(){
 
 refresh(){
 	_noopts $@ || exit $?
-	pkgs=$(_listpkgs $@)
+	addpkgs=$@
+	updpkgs=$(_statusdb update)
 	_upgrade                          &&
-	_makepkgs $pkgs                   &&
-	_pinpkgs  $pkgs                   &&
+	_makepkgs $updpkgs $addpkgs       &&
+	_pinpkgs  $addpkgs                &&
 	_delpkgs                          &&
 	(_pushpkgs 2> /dev/null || true)  &&
 	_updatedb
