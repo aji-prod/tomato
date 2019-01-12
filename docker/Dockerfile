@@ -1,15 +1,6 @@
 FROM archlinux/base
 
 # Volume:
-# 	Let to share a same mirrorlist
-VOLUME ["/etc/pacman.d"]
-# 	As the we will mount the /etc/pacman.d read-only,
-# 	to to have a subvolume writeable (not mounted),
-# 	to avoid any gpg issue while updating.
-VOLUME ["/etc/pacman.d/gnupg"]
-# 	The don't have the same hooks from the host
-# 	let to have a subvolume wich hand the hook's host
-VOLUME ["/etc/pacman.d/hooks"]
 # 	Let to share the same writeable pacman's cache from the host
 VOLUME ["/var/cache/pacman/pkg"]
 # 	Publish to the host our packages
@@ -68,6 +59,10 @@ COPY --chown=tomato tomato.sh .
 RUN chmod u+x tomato.sh
 COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 
+# Volume:
+# 	Let to share a same mirrorlist
+VOLUME ["/home/tomato/mirrorlist"]
+#	Let the host to define a makepkg.conf
 VOLUME ["/home/tomato/makepkg.conf"]
 
 ENTRYPOINT [ "/bin/sudo", "/home/tomato/tomato.sh" ]

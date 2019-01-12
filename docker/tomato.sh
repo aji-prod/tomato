@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME="tomato"
-VERSION=0.1.0
+VERSION=0.2.0
 
 REPODIR="${REPODIR:-/var/pkg/${NAME}}"
 REPOLST="${REPODIR}/${NAME}.pkglist"
@@ -115,7 +115,19 @@ _aur(){
 }
 
 # -- Environment
+_mirrorlist(){
+	if test -f "${HOME}/mirrorlist" -a \
+	        ! -L "/etc/pacman.d/mirrorlist";
+	then
+		ln --symbolic                           \
+		   --force                              \
+		   --target="$/etc/pacman.d/mirrorlist" \
+		   "${HOME}/mirrorlist"
+	fi
+}
+
 _upgrade(){
+	_mirrorlist                 &&
 	_aur -Sy   $AURFLAGS        &&
 	_aur -S    $AURFLAGS pikaur &&
 	_aur -Syuu $AURFLAGS        &&

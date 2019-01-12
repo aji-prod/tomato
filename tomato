@@ -1,13 +1,13 @@
 #!/bin/sh
 NAME=$(basename ${0:-tomato})
-VERSION=0.1.0
+VERSION=0.2.0
 readonly NAME
 readonly VERSION
 
 TOMATO_NAME="${TOMATO_NAME:-tomato}"
 TOMATO_PKGDIR="${TOMATO_PKGDIR:-/var/pkg/tomato}"
 TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato}"
-TOMATO_PACDIR="${TOMATO_PACDIR:-/etc/pacman.d}"
+TOMATO_MIRRORLIST="${TOMATO_MIRRORLIST:-/etc/pacman.d/mirrorlist}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
 
@@ -78,7 +78,7 @@ _volume(){
 
 _volumes(){
 	_volume "${TOMATO_PKGDIR}" "/var/pkg/tomato"
-	_volume "${TOMATO_PACDIR}" "/etc/pacman.d:ro"
+	_volume "${TOMATO_MIRRORLIST}" "/home/tomato/mirrorlist:ro"
 	_volume "${TOMATO_PKGCACHEDIR}" "/var/cache/pacman/pkg"
 	_volume "${TOMATO_MAKEPKGCONF}" "/home/tomato/makepkg.conf:ro"
 }

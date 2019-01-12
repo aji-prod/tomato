@@ -100,12 +100,12 @@ To list all packages available from the [tomato] repository with theirs [AUR sta
 
 The default settings are defined as:
 ```sh
-TOMATO_NAME=tomato              # The tomato's docker image
-TOMATO_IMGDIR=/usr/share/tomato # The tomato's docker files
-TOMATO_PKGDIR=/var/pkg/tomato   # The tomato's repository directory
-TOMATO_PACDIR=/etc/pacman.d     # The host's mirrorlist directory
-TOMATO_MAKEPKGCONF=             # Let to use a specific makepkg.conf
-TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg # The pacman's cache directory
+TOMATO_NAME=tomato                        # The tomato's docker image
+TOMATO_IMGDIR=/usr/share/tomato           # The tomato's docker files
+TOMATO_PKGDIR=/var/pkg/tomato             # The tomato's repository directory
+TOMATO_PACDIR=/etc/pacman.d /mirrorlist   # The host's mirrorlist
+TOMATO_MAKEPKGCONF=                       # Let to use a specific makepkg.conf
+TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg  # The pacman's cache directory
 ```
 
 ## GPG Signatures
@@ -149,11 +149,11 @@ To minimize the network access, the image shares the same [pacman's cache] with 
 
 > host default: `/var/cache/pacman/pkg`
 
-#### Volume `/etc/pacman.d`
+#### Volume `/home/tomato/mirrorlist`
 
 The [mirrorlist] used by the image is read from this volume, always mounted with a _read only_ permission.
 
-> host default: `/etc/pacman.d`.
+> host default: `/etc/pacman.d/mirrorlist`.
 
 #### Volume `/home/tomato/makepkg.conf`
 
