@@ -119,6 +119,26 @@ To use another [makepkg.conf] override the `TOMATO_MAKEPKGCONF=` key.
 
 For now, neither the [GPG signatures] from the [AUR packages] nor to build a package are supported and ignored.
 
+## Systemd
+
+[tomato] management can be helped with [systemd] and two [systemd timers]:
+
+  - `tomato-update-image.timer`,
+  - `tomato-update-repository.timer`.
+
+## tomato-update-image.timer
+
+Calls `tomato --rebuild-image`[^](Docker Image) monthly to synchronize the [tomato] local [Docker image] against the official [ArchLinux Docker image].
+
+## tomato-update-repository.timer
+
+Calls `tomato refresh`[^](Update the tomato repository with the latest AUR packages versions) weekly to update the local _[tomato]_ [pacman repository].
+
+## tomato-update.conf
+
+To pass arguments to the [systemd timers] you can edit the `TOMATO_ARGS=` key, located at `/etc/conf.d/tomato-update.conf`.  
+`/etc/conf.d/tomato-update.conf` needs first to be copied from `/usr/share/tomato/tomato-update.conf`.
+
 
 ## Docker Image
 
@@ -217,5 +237,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [pacman]: https://wiki.archlinux.org/index.php/Pacman
   [pikaur]: https://github.com/actionless/pikaur
   [repose]: https://github.com/vodik/repose
+  [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
+  [systemd]: https://wiki.archlinux.org/index.php/Systemd
   [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
   [tomato]: https://github.com/aji-prod/tomato

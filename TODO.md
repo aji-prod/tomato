@@ -18,7 +18,7 @@
   - [X] Tomato's image
   - [X] Default makepkg.conf/packager
   - [X] Why tomato as command name?
-  - [ ] Systemd integration
+  - [X] Systemd integration
   - [ ] Install
 
 ## 0.3.0
