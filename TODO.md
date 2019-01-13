@@ -16,9 +16,10 @@
 
   - [X] Volumes
   - [X] Tomato's image
-  - [ ] Default makepkg.conf/packager
+  - [X] Default makepkg.conf/packager
   - [X] Why tomato as command name?
   - [ ] Systemd integration
+  - [ ] Install
 
 ## 0.3.0
 

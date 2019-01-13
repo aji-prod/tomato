@@ -103,10 +103,17 @@ The default settings are defined as:
 TOMATO_NAME=tomato                        # The tomato's docker image
 TOMATO_IMGDIR=/usr/share/tomato           # The tomato's docker files
 TOMATO_PKGDIR=/var/pkg/tomato             # The tomato's repository directory
-TOMATO_PACDIR=/etc/pacman.d /mirrorlist   # The host's mirrorlist
+TOMATO_PACDIR=/etc/pacman.d/mirrorlist    # The host's mirrorlist
 TOMATO_MAKEPKGCONF=                       # Let to use a specific makepkg.conf
 TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg  # The pacman's cache directory
 ```
+
+### makepkg.conf
+
+[tomato] provides a default [makepkg.conf] at `/usr/share/tomato/makepkg.conf`.
+All the packages built by [tomato] will be attributed to the [Françoise 'Ed' Appledelhi &lt;ed@tomato.earth&gt;] packager. The others options have the [makepkg.conf defaults] provided by [ArchLinux].
+
+To use another [makepkg.conf] override the `TOMATO_MAKEPKGCONF=` key.
 
 ## GPG Signatures
 
@@ -191,11 +198,14 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [Docker volumes]: https://docs.docker.com/storage/volumes/
   [Docker]: https://docs.docker.com/
   [Edward Wong Hau Pepelu Tivrusky IV]: http://cowboybebop.wikia.com/wiki/Edward
+  [Françoise 'Ed' Appledelhi &lt;ed@tomato.earth&gt;]: http://cowboybebop.wikia.com/wiki/Edward
   [GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
   [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
   [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
   [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
   [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
+  [makepkg.conf defaults]: https://git.archlinux.org/svntogit/packages.git/tree/trunk/makepkg.conf?h=packages/pacman
+  [makepkg.conf]: https://www.archlinux.org/pacman/makepkg.conf.5.html
   [mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
   [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
   [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
