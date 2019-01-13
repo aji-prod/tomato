@@ -36,13 +36,13 @@ options:
   Tomato v0.2.0
 ```
 
-## Manage AUR packages
+### Manage AUR packages
 
-### Search for an AUR package to include in the tomato repository
+#### Search for an AUR package to include in the tomato repository
 
 > `tomato search packagedesc`
 
-### Include an AUR package to the tomato repository
+#### Include an AUR package to the tomato repository
 
 > `tomato add packagename`
 
@@ -50,7 +50,7 @@ It can be then installed on the host with the [pacman install command]:
 
 > `pacman -S packagename`
 
-### Remove an AUR package from the tomato repository
+#### Remove an AUR package from the tomato repository
 
 > `tomato del packagename`
 
@@ -58,7 +58,7 @@ If the package is installed on the host, it can be removed with the [pacman unin
 
 > `pacman -Rs packagename`
 
-### Update the tomato repository with the latest AUR packages versions
+#### Update the tomato repository with the latest AUR packages versions
 
 > `tomato refresh`
 
@@ -66,7 +66,7 @@ The host can be updated with [pacman update command]:
 
 > `pacman -Syu`
 
-#### Update the tomato repository then the host in one shot
+##### Update the tomato repository then the host in one shot
 
 [tomato] provides a shortcut to update the host right after refreshing the tomato repository:
 
@@ -76,7 +76,7 @@ Which is a an alias to:
 
 > `pacman -Syuw && tomato refresh && pacman -Syu`
 
-### List tomato repository packages
+#### List tomato repository packages
 
 To list the packages explicitly included to the [tomato] repository:
 
