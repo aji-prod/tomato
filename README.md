@@ -25,7 +25,7 @@ operations:
   tomato refresh [<package(s)>] # update tomato repository;
   tomato list    [all|status]   # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
-  tomato version [number]       # show version 0.1.0;
+  tomato version [number]       # show version 0.2.0;
   tomato (usage|help)           # this help message.
 
 options:
@@ -33,7 +33,7 @@ options:
   tomato --remove-image         # remove the tomato Docker image;
   tomato --tomato-config <path> # path to custom tomato config.
 
-  Tomato v0.1.0
+  Tomato v0.2.0
 ```
 
 ## Manage AUR packages
