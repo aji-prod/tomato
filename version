@@ -5,6 +5,7 @@ PKGVER="${pkgver}"
 
 DKRVER=$(sh ./docker/tomato.sh version number 2> /dev/null)
 TMTVER=$(sh ./tomato -VV 2> /dev/null)
+RDMVER=$(grep -s -h -o 'Tomato v[0-9.]\+' ./README.md | sed 's:Tomato v::')
 
 ret=0
 
@@ -21,6 +22,12 @@ then
 	ret=1
 fi
 
+if test "${RDMVER}" != "${TMTVER}";
+then
+	echo "Invalid README versions ${RDMVER} != ${TMTVER}" 1>&2
+	ret=1
+fi
+
 if test $ret -eq 0;
 then
 	echo "$PKGVER"
@@ -29,6 +36,7 @@ else
 Package: ${PKGVER}
 Host   : ${TMTVER}
 Docker : ${DKRVER}
+README : ${RDMVER}
 EOF
 fi
 
