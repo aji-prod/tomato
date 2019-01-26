@@ -7,7 +7,7 @@ arch=('any')
 url="https://github.com/aji-prod/tomato"
 license=('GPL3')
 source=(
-	"${pkgname}-${pkgver}.tar.bz2"
+	"${pkgname}-${pkgver}.tar.gz"::https://github.com/aji-prod/tomato/archive/"${pkgver}".tar.gz
 )
 
 #sums=
