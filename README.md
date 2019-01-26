@@ -12,9 +12,8 @@ vi:wrap:linebreak:nolist:spell:spelllang=en:
 
 As such [tomato] is not a [pacman wrapper], it is more an indirect [AUR helper]. It let the host system clean of build's dependencies, like [base-devel].
 
-The selection of [AUR packages] can be installed by a common [pacman usage] on the host.
+The selection of [AUR packages] can be installed with a common [pacman usage] on the host.
 
-## Usage
 
 ```sh
 usage: tomato [<options>] <operation> [...]
@@ -36,13 +35,65 @@ options:
   Tomato v0.2.0
 ```
 
-### Manage AUR packages
+## Installation
 
-#### Search for an AUR package to include in the tomato repository
+### Install [tomato]
+
+#### As an [prebuilt package]
+
+[tomato] provides a [prebuilt package] with no other dependencies than [pacman] and can be installed with a [pacman install command]:
+
+```sh
+curl -L https://github.com/aji-prod/tomato/releases/download/v0.2.0/tomato-0.2.0-1-any.pkg.tar.xz > tomato-0.2.0-1-any.pkg.tar.xz  
+pacman -U ./tomato-0.2.0-1-any.pkg.tar.xz
+```
+
+#### As an [AUR package]
+
+The [AUR package] can be installed with [makepkg] or any other [AUR helper].
+
+#### From sources
+
+```sh
+git clone --branch v0.2.0 --depth 1 https://github.com/aji-prod/tomato/ tomato  
+cd tomato  
+make pkg  
+pacman -U pkg/tomato-0.2.0-1-any.pkg.tar.xz
+```
+
+### Enable [tomato]  [pacman repository]
+
+To install the [AUR packages] maintained by [tomato] the local [pacman repository] must be active for the host.
+Add the following section to [pacman.conf]:
+
+> \[tomato]  
+> SigLevel = Optional TrustAll  
+> Server = file:///var/pkg/tomato
+
+
+### Enable the [docker] service
+
+As [tomato] runs inside a [docker image] it is recommended to activate the [docker] service first.
+
+```sh
+systemctl enable docker  
+systemctl start docker
+```
+
+
+### Enable [tomato] auto-update
+
+As an [AUR package], [tomato] can update itself[^](Update the tomato repository with the latest AUR packages versions), by first registering[^](Include an AUR package to the tomato repository) it:
+
+> `tomato add tomato`
+
+## Manage [AUR packages]
+
+### Search for an AUR package to include in the tomato repository
 
 > `tomato search packagedesc`
 
-#### Include an AUR package to the tomato repository
+### Include an AUR package to the tomato repository
 
 > `tomato add packagename`
 
@@ -50,7 +101,7 @@ It can be then installed on the host with the [pacman install command]:
 
 > `pacman -S packagename`
 
-#### Remove an AUR package from the tomato repository
+### Remove an AUR package from the tomato repository
 
 > `tomato del packagename`
 
@@ -58,7 +109,7 @@ If the package is installed on the host, it can be removed with the [pacman unin
 
 > `pacman -Rs packagename`
 
-#### Update the tomato repository with the latest AUR packages versions
+### Update the tomato repository with the latest AUR packages versions
 
 > `tomato refresh`
 
@@ -66,7 +117,7 @@ The host can be updated with [pacman update command]:
 
 > `pacman -Syu`
 
-##### Update the tomato repository then the host in one shot
+#### Update the tomato repository then the host in one shot
 
 [tomato] provides a shortcut to update the host right after refreshing the tomato repository:
 
@@ -76,7 +127,7 @@ Which is a an alias to:
 
 > `pacman -Syuw && tomato refresh && pacman -Syu`
 
-#### List tomato repository packages
+### List tomato repository packages
 
 To list the packages explicitly included to the [tomato] repository:
 
@@ -208,6 +259,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
 
   [AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
+  [AUR package]: https://aur.archlinux.org/packages/tomato/
   [AUR packages]: https://www.archlinux.org/packages/
   [AUR status]: https://aur.archlinux.org/packages/?K=status&SB=m&SO+=+d
   [AUR]: https://aur.archlinux.org/
@@ -226,6 +278,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
   [makepkg.conf defaults]: https://git.archlinux.org/svntogit/packages.git/tree/trunk/makepkg.conf?h=packages/pacman
   [makepkg.conf]: https://www.archlinux.org/pacman/makepkg.conf.5.html
+  [makepkg]: https://wiki.archlinux.org/index.php/Makepkg#Usage
   [mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
   [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
   [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
@@ -234,8 +287,10 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [pacman usage]: https://wiki.archlinux.org/index.php/Pacman#Usage
   [pacman wrapper]: https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers
   [pacman's cache]: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
+  [pacman.conf]: https://wiki.archlinux.org/index.php/Pacman#Configuration
   [pacman]: https://wiki.archlinux.org/index.php/Pacman
   [pikaur]: https://github.com/actionless/pikaur
+  [prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.2.0/tomato-0.2.0-1-any.pkg.tar.xz
   [repose]: https://github.com/vodik/repose
   [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
   [systemd]: https://wiki.archlinux.org/index.php/Systemd
