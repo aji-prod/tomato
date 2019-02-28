@@ -1,13 +1,13 @@
 # Maintainer : aji <43468383+aji-prod@users.noreply.github.com>
 pkgname=tomato
 pkgver=0.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="AUR local repository manager"
 arch=('any')
 url="https://github.com/aji-prod/tomato"
 license=('GPL3')
 source=(
-	"${pkgname}-${pkgver}.tar.gz"::https://github.com/aji-prod/tomato/archive/"${pkgver}".tar.gz
+	"${pkgname}-${pkgver}.tar.gz"::https://github.com/aji-prod/tomato/archive/v"${pkgver}".tar.gz
 )
 
 #sums=
