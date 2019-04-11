@@ -119,9 +119,9 @@ _mirrorlist(){
 	if test -f "${HOME}/mirrorlist" -a \
 	        ! -L "/etc/pacman.d/mirrorlist";
 	then
-		ln --symbolic                           \
-		   --force                              \
-		   --target="$/etc/pacman.d/mirrorlist" \
+		ln --symbolic                          \
+		   --force                             \
+		   --target="/etc/pacman.d/mirrorlist" \
 		   "${HOME}/mirrorlist"
 	fi
 }
