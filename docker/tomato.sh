@@ -11,6 +11,10 @@ KEYSLST="${REPODIR}/${NAME}.gpglist"
 PKGDIR="$(echo ~tomato)/.cache/pikaur/pkg"
 PKGGLOB=*.pkg.tar.*
 
+MIRRORLIST="$(echo ~tomato)/mirrorlist"
+MAKEPKGCONF="$(echo ~tomato)/makepkg.conf"
+CONFIGDIR="$(echo ~tomato)/.config/pacman/"
+
 AURFLAGS="${PACFLAGS:- --needed --noprogressbar --noconfirm}"
 AUR="/usr/bin/pikaur"
 
@@ -128,16 +132,22 @@ _fixup(){
 		-exec chmod a+r -- "{}/__init__.py" \;
 }
 
+_volfile(){
+	volume="$1"
+	target="$2"
+
+	if test -f "${volume}" -a ! -L "${target}";
+	then
+		ln --symbolic           \
+		   --force              \
+		   --target="${target}" \
+		   "${volume}"
+	fi
+}
+
 # -- Environment
 _mirrorlist(){
-	if test -f "${HOME}/mirrorlist" -a \
-	        ! -L "/etc/pacman.d/mirrorlist";
-	then
-		ln --symbolic                          \
-		   --force                             \
-		   --target="/etc/pacman.d/mirrorlist" \
-		   "${HOME}/mirrorlist"
-	fi
+	_volfile "${MIRRORLIST}" "/etc/pacman.d/" 
 }
 
 _upgrade(){
@@ -186,15 +196,7 @@ _knownpkgs(){
 
 # -- Package Install
 _makepkgconf(){
-	if test -f "${HOME}/makepkg.conf" -a \
-	        ! -L "${XDG_CONFIG_HOME}/pacman/makepkg.conf";
-	then
-		mkdir -p "${XDG_CONFIG_HOME}/pacman"    &&
-		ln --symbolic                            \
-		   --force                               \
-		   --target="${XDG_CONFIG_HOME}/pacman/" \
-		   "${HOME}/makepkg.conf"
-	fi
+	_volfile "${MAKEPKGCONF}" "${CONFIGDIR}"
 }
 
 _makepkgs(){
