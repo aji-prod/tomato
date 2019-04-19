@@ -59,6 +59,15 @@ COPY --chown=tomato tomato.sh .
 RUN chmod u+x tomato.sh
 COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 
+# Fixup pikaur
+# Note: pikaur packaging disables read on its __init__.py, allowing
+#       only the root to execute pikaur; even if by design it calls by itself
+#       the sudo command; to allow as expected to a non root user to install a
+#       package with pikaur, we need to correct the __init__.py permissions.
+#       otherwise we will enable the systemd user feature which doesn't work
+#       within a docker image.
+RUN sudo -n -- /home/tomato/tomato.sh fixup
+
 # Volume:
 # 	Let to share a same mirrorlist
 VOLUME ["/home/tomato/mirrorlist"]

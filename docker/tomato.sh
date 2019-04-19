@@ -114,6 +114,20 @@ _aur(){
 	_tomato "${AUR}" $@
 }
 
+_fixup(){
+	# Fixup __init__.py root only read permission
+	# as the pikaur will be run by the local user
+	# this is valid and required;
+	# pikaur jumps to a sudo command by itself after.
+	#
+	# This a packaging issue found with pikaur 1.4.
+	#
+	# This command should only be run within the
+	# Dockerfile.
+	find /usr/lib/python* -name pikaur -type d \
+		-exec chmod a+r -- "{}/__init__.py" \;
+}
+
 # -- Environment
 _mirrorlist(){
 	if test -f "${HOME}/mirrorlist" -a \
@@ -352,7 +366,7 @@ version(){
 		*)
 			/usr/bin/uname    -a &&
 			/usr/bin/pacman   -V &&
-			"${AUR}" -V          &&
+			_aur              -V &&
 			/usr/bin/repose   -V &&
 			_version;;
 	esac
@@ -407,6 +421,10 @@ refresh(){
 	_updatedb
 }
 
+fixup(){
+	_fixup
+}
+
 
 main(){
 	case $1 in
@@ -433,6 +451,9 @@ main(){
 			;;
 		exec) # not documented
 			shift; _tomato $@
+			;;
+		fixup) # no documented
+			shift; _fixup $@
 			;;
 		*)
 			echo "Operation \"${NAME} $1\" not supported," \
