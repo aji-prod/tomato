@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME="tomato"
-VERSION=0.2.0
+VERSION=0.2.1
 
 REPODIR="${REPODIR:-/var/pkg/${NAME}}"
 REPOLST="${REPODIR}/${NAME}.pkglist"
@@ -454,7 +454,7 @@ main(){
 		exec) # not documented
 			shift; _tomato $@
 			;;
-		fixup) # no documented
+		fixup) # not documented
 			shift; _fixup $@
 			;;
 		*)
