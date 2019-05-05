@@ -418,7 +418,6 @@ refresh(){
 	_upgrade                          &&
 	_makepkgs $updpkgs $addpkgs       &&
 	_pinpkgs  $addpkgs                &&
-	_delpkgs                          &&
 	(_pushpkgs 2> /dev/null || true)  &&
 	_updatedb
 }
