@@ -29,14 +29,18 @@ version: _version
 	$(eval VERSION := $(shell sh version 2> /dev/null))
 
 tar:	version
-	tar -c -z \
-		--exclude ".git*" \
-		--exclude "tomato-*.tar.gz" \
-		-f "tomato-$(VERSION).tar.gz" *
+	-rm "/tmp/tomato-$(VERSION)"
+	ln -s "${CURDIR}" "/tmp/tomato-$(VERSION)"
+	bsdtar -c -H -z \
+		--exclude ".git/*" \
+		--exclude "tomato-*.tar.*" \
+		--exclude "pkg" \
+		--exclude "src" \
+		-f "tomato-$(VERSION).tar.gz" -C "/tmp" "tomato-$(VERSION)"
 
 pkg:	tar
 	mkdir pkg || rm -r pkg/* || true
-	cp "tomato-$(VERSION).tar.gz" pkg
+	mv "tomato-$(VERSION).tar.gz" pkg
 	sed "s:#sums=:$(shell makepkg --config "$(makepkgconf)" -g):" PKGBUILD > pkg/PKGBUILD
 	cd pkg && namcap PKGBUILD && makepkg --config "$(makepkgconf)"
 

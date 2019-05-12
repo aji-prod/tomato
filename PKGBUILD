@@ -17,7 +17,7 @@ depends=(
 )
 
 package() {
-	cd "${srcdir}"
+	cd "${srcdir}/${pkgname}-${pkgver}"
 	install -Dm755 tomato "$pkgdir/usr/bin/tomato"
 	install -Dm644 tomato.conf "$pkgdir/etc/tomato.conf"
 	install -Dm644 LICENSE "$pkgdir/usr/share/licences/$pkgname/LICENSE"
