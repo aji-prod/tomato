@@ -1,0 +1,115 @@
+#!/bin/sh
+NAME=$(basename ${0:-geninteg})
+
+_echo2(){
+	>&2 echo $@
+}
+
+_options(){
+	# out
+	args=()
+	makepkgconfig=""
+	inplace=0
+	usage=0
+	# flags
+	i=0
+	confarg=0
+
+	for arg in $@;
+	do
+		case ${arg} in
+			--config=*)
+				makepkgconfig="${arg#--config=}"
+				;;
+			--config)
+				confarg=1
+				;;
+			--inplace)
+				inplace=1
+				;;
+			-h|--help)
+				usage=1
+				;;
+			*)
+				if test ${confarg} -eq 1;
+				then
+					confarg=0
+					makepkgconfig="$(realpath ${arg})"
+				else
+					args[$i]="${arg}"
+					i=$(( $i + 1 ))
+				fi
+				;;
+		esac
+	done
+
+	export args
+	export usage
+	export inplace
+	export makepkgconfig
+}
+
+_usage(){
+	>&2 cat <<EOF
+Usage: ${NAME} [options] <PKGBUILD>
+
+An help script to generate source=()'s checkums from a PKGBUILD
+template. The script will jump to the same directory of <PKGBUILD>.
+
+Options:"
+  --config    <makepkg.conf> # pass this configuration to makepkg;
+  --inplace                  # update <PKGBUILD> inplace;
+  --help|-h                  # print this message.
+EOF
+
+	exit 2
+}
+
+main(){
+	_options $@
+
+	if test ${usage} -eq 1 -o ${#args[@]} != 1;
+	then
+		_usage
+	fi
+
+	pkgbuild="$(realpath ${args[0]})"
+	workingdir="$(dirname ${pkgbuild})"
+
+	_echo2 "# makepkg.conf(${makepkgconfig:-default}); workding-dir(${workingdir:-.})"
+
+	if test -n "${makepkgconfig}";
+	then
+		makepkgconfig="--config ${makepkgconfig}"
+	fi
+
+	if test -n "${workingdir}";
+	then
+		>&2 cd -- "${workingdir}" || exit 1
+	fi
+
+	if test ${inplace} -eq 1;
+	then
+		inplace="-i~"
+	else
+		inplace=""
+	fi
+
+	if ! $(grep -q -s -e "^#sums=$" -- ${pkgbuild});
+	then
+		_echo2 "Not a PKGBUILD template: ${pkgbuild}"
+		exit 1
+	fi
+
+	sums=$(makepkg ${makepkgconfig} -p "${pkgbuild}" -g)
+
+	if test -z "${sums}";
+	then
+		_echo2 "No checksums to compute"
+		exit 1
+	fi
+
+	sed ${inplace} "s:#sums=:${sums}:" "${pkgbuild}"
+}
+
+main $@
