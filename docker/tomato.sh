@@ -349,7 +349,7 @@ operations:
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
   ${NAME} list    [all|status]   # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
-  ${NAME} version [number]       # show version ${VERSION};
+  ${NAME} version [all|number]   # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
 
 options:
@@ -365,11 +365,13 @@ version(){
 	case "$1" in
 		number)
 			echo "${VERSION}";;
-		*)
+		all)
 			/usr/bin/uname    -a &&
 			/usr/bin/pacman   -V &&
 			_aur              -V &&
 			/usr/bin/repose   -V &&
+			_version;;
+		*)
 			_version;;
 	esac
 }
