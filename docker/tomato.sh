@@ -194,6 +194,12 @@ _knownpkgs(){
 	cat -- "${REPOLST}" | grep -x -E -- "$pkgs"
 }
 
+_unknownpkgs(){
+	( _listdb | awk '{print $1 }'; _listpkgs ) |
+	LC_ALL="C" sort | LC_ALL="C" uniq -u |
+	grep -f "${REPOLST}" -
+}
+
 # -- Package Install
 _makepkgconf(){
 	_volfile "${MAKEPKGCONF}" "${CONFIGDIR}"
@@ -347,7 +353,8 @@ operations:
   ${NAME} add      <package(s)>  # add a package to the maintained list;
   ${NAME} del      <package(s)>  # remove a package from the maintained list;
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
-  ${NAME} list    [all|status]   # list maintained packages;
+  ${NAME} list    [all|status|split]
+                                 # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
   ${NAME} version [all|number]   # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
@@ -382,6 +389,8 @@ list(){
 			_listdb;;
 		status)
 			_reportdb;;
+		split)
+			_unknownpkgs;;
 		"")
 			_listpkgs;;
 		*)

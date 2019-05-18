@@ -22,7 +22,8 @@ operations:
   tomato add      <package(s)>  # add a package to the maintained list;
   tomato del      <package(s)>  # remove a package from the maintained list;
   tomato refresh [<package(s)>] # update tomato repository;
-  tomato list    [all|status]   # list maintained packages;
+  tomato list    [all|status|split]
+                                # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
   tomato version [number]       # show version 0.2.2;
   tomato (usage|help)           # this help message.
@@ -140,6 +141,10 @@ To list all packages and versions available from the [tomato] repository:
 To list all packages available from the [tomato] repository with theirs [AUR status]:
 
 > `tomato list status`
+
+To list the [split package]s, or to list the packages explicitly included but not found from the [tomato] repository:
+
+> `tomato list split`
 
 ## Configuration
 
@@ -292,6 +297,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [pikaur]: https://github.com/actionless/pikaur
   [prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.2.2/tomato-0.2.2-1-any.pkg.tar.xz
   [repose]: https://github.com/vodik/repose
+  [split package]: https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5#PACKAGE_SPLITTING
   [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
   [systemd]: https://wiki.archlinux.org/index.php/Systemd
   [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
