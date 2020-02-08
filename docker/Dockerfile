@@ -11,16 +11,17 @@ VOLUME ["/var/pkg/tomato"]
 #
 # Note: Activate the [multilib] repository as it can be required to build
 #       some AUR packages.
-RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
-    > /etc/pacman.d/mirrorlist                                       && \
-    rm /usr/share/libalpm/hooks/package-cleanup.hook                 && \
-    echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"          \
-    >> /etc/pacman.conf                                              && \
-    pacman-key --init && pacman-key --populate                       && \
-    pacman -Syuu --noconfirm --noprogressbar --needed                && \
-    pacman -S    --noconfirm --noprogressbar --needed base-devel        \
-                                                      python            \
-                                                      repose            \
+RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'    \
+    > /etc/pacman.d/mirrorlist                                          && \
+    rm /usr/share/libalpm/hooks/package-cleanup.hook                    && \
+    echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
+    >> /etc/pacman.conf                                                 && \
+    pacman-key --init && pacman-key --populate                          && \
+    pacman -Sy   --noconfirm --noprogressbar --needed archlinux-keyring && \
+    pacman -Suu  --noconfirm --noprogressbar --needed                   && \
+    pacman -S    --noconfirm --noprogressbar --needed base-devel           \
+                                                      python               \
+                                                      repose               \
                                                       pacman-contrib
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
