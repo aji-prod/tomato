@@ -219,6 +219,10 @@ _pushpkgs(){
 	xargs cp --no-clobber --target-directory="$REPODIR/" --
 }
 
+_cleanpkgs(){
+	paccache --remove --keep 1 --quiet --cachedir "${REPODIR}"
+}
+
 _delpkgs(){
 	_rmglob "$REPODIR" "$PKGGLOB"
 }
@@ -408,6 +412,7 @@ add(){
 	_makepkgs $@       &&
 	_pinpkgs  $pkgs    &&
 	_pushpkgs          &&
+	_cleanpkgs         &&
 	_updatedb
 }
 
@@ -430,6 +435,7 @@ refresh(){
 	_makepkgs $updpkgs $addpkgs       &&
 	_pinpkgs  $addpkgs                &&
 	(_pushpkgs 2> /dev/null || true)  &&
+	_cleanpkgs                        &&
 	_updatedb
 }
 

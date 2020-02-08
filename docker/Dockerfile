@@ -20,13 +20,16 @@ RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' \
     pacman -Syuu --noconfirm --noprogressbar --needed                && \
     pacman -S    --noconfirm --noprogressbar --needed base-devel        \
                                                       python            \
-                                                      repose
+                                                      repose            \
+                                                      pacman-contrib
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
 #
 # Note: repose is used by the tomato.sh script, to update cleanly
 #       the packages files within the repository directory.
-
+#
+# Note: pacman-contrib is only required for paccache, to clean up the
+#       the old packages within the tomato repository.
 
 # Declare context for the build user
 #
