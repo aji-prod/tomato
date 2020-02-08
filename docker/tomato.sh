@@ -18,15 +18,48 @@ CONFIGDIR="$(echo ~tomato)/.config/pacman/"
 AURFLAGS="${PACFLAGS:- --needed --noprogressbar --noconfirm}"
 AUR="/usr/bin/pikaur"
 
+# -- Colors
+ERROR="\033[0;31m"
+HINT="\033[1;33m"
+RESET="\033[0m"
 
 # -- Utilities
+_echo2(){
+	>&2 echo $@
+}
+
 _error(){
-	echo $* 1>&2
+	if test -t 2;
+	then
+		_echo2 -n -e ${ERROR}
+		_echo2 $*
+		_echo2 -n -e ${RESET}
+	else
+		_echo2 $*
+	fi
 	exit 1
 }
 
+_warn(){
+	if test -t 2;
+	then
+		_echo2 -n -e ${ERROR}
+		_echo2 $*
+		_echo2 -n -e ${RESET}
+	else
+		_echo2 $*
+	fi
+}
+
 _hint(){
-	echo $* 1>&2
+	if test -t 2;
+	then
+		_echo2 -n -e ${HINT}
+		_echo2 $*
+		_echo2 -n -e ${RESET}
+	else
+		_echo2 $*
+	fi
 }
 
 _join(){
