@@ -125,10 +125,22 @@ _noopts(){
 				_error "Not supported flag ${arg}"
 				;;
 			*)
-				;;
+				echo "$arg";;
 		esac
 	done
-	echo $@
+}
+
+_opts(){
+	for arg in $@;
+	do
+		case $arg in
+			# AUR authorized flags
+			-*)
+				echo "$arg";;
+			*)
+				shift;;
+		esac
+	done
 }
 
 _rmglob(){
@@ -243,8 +255,22 @@ _makepkgs(){
 	#       we can't sign our built images,
 	#       and can't check unknown GPK keys;
 	#       for now we are ignoring GPG signatures with makepkg.
+	allbuilt=0
+	pkgs=$(_noopts $@)
+	opts=$(_opts $@)
 	_makepkgconf
-	_aur -S $AURFLAGS --mflags=--skippgpcheck $@
+	for pkg in $pkgs;
+	do
+		_hint ${NAME^} building $pkg...
+		_aur -S $AURFLAGS --mflags=--skippgpcheck $opts $pkg
+		ret=$?
+		if test 0 -ne $ret
+		then
+			_warn Unable to build $pkg
+			allbuilt=$ret
+		fi
+	done
+	return $allbuilt
 }
 
 _pushpkgs(){
@@ -461,12 +487,17 @@ del(){
 }
 
 refresh(){
-	_noopts $@ || exit $?
-	addpkgs=$@
-	updpkgs=$(_statusdb update)
+	pkgs=$(_noopts $@) || exit $?
+	opts=$(_opts $@)
+	updt=$(_statusdb update)
+	if test -z "$pkgs";
+	then
+		pkgs=$updt
+	else
+		pkgs=$(_join '\n' $@ | LC_ALL="C" sort | LC_ALL="C" uniq -d)
+	fi
 	_upgrade                          &&
-	_makepkgs $updpkgs $addpkgs       &&
-	_pinpkgs  $addpkgs                &&
+	(_makepkgs $opts $pkgs  || true)  &&
 	(_pushpkgs 2> /dev/null || true)  &&
 	_cleanpkgs                        &&
 	_updatedb
