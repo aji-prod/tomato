@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME="tomato"
-VERSION=0.2.2
+VERSION=0.3.0
 
 REPODIR="${REPODIR:-/var/pkg/${NAME}}"
 REPOLST="${REPODIR}/${NAME}.pkglist"
