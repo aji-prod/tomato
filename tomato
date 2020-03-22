@@ -233,7 +233,7 @@ main(){
 		return 0
 	elif test ${update} -eq 1;
 	then
-		${PACMAN} -Syuuw && _tomato ${args[@]} && ${PACMAN} -Syuu
+		${PACMAN} -Syuuw && _tomato refresh ${args[@]} && ${PACMAN} -Syuu
 	else
 		_tomato ${args[@]}
 	fi
