@@ -157,6 +157,7 @@ _options(){
 	args=()
 	rebuild=0
 	update=0
+	update_flag=""
 	remove=0
 	# flags
 	i=0
@@ -178,8 +179,9 @@ _options(){
 			--tomato-config)
 				loadconf=1
 				;;
-			-Syu)
+			-S*y*u*|-S*u*y*)
 				update=1
+				update_flag="${arg}"
 				;;
 			-VV)
 				version=1
@@ -201,6 +203,7 @@ _options(){
 	export remove
 	export rebuild
 	export update
+	export update_flag
 	export version
 }
 
@@ -233,7 +236,8 @@ main(){
 		return 0
 	elif test ${update} -eq 1;
 	then
-		${PACMAN} -Syuuw && _tomato refresh ${args[@]} && ${PACMAN} -Syuu
+		_hint "Refresh and upgrade host packages (${update_flag})"
+		${PACMAN} ${update_flag}w && _tomato refresh ${args[@]} && ${PACMAN} ${update_flag}
 	else
 		_tomato ${args[@]}
 	fi
