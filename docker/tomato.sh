@@ -409,6 +409,7 @@ EOF
 
 # -- Main
 usage(){
+	____=$(printf "%${#NAME}s" "")
 	cat <<EOF
 usage: ${NAME} [<options>] <operation> [...]
 
@@ -417,14 +418,14 @@ operations:
   ${NAME} del      <package(s)>  # remove a package from the maintained list;
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
   ${NAME} list    [all|status|split]
-                                 # list maintained packages;
+  ${____}                        # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
   ${NAME} version [all|number]   # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
 
   ${NAME} -Syu                   # or any other short variant (-Syuu, -Suy,
-                                 # ...), will update the ${NAME} repository,
-                                 # and the host system.
+  ${____}                        # ...), will update the ${NAME} repository,
+  ${____}                        # and the host system.
 
 options:
   ${NAME} --rebuild-image        # build or rebuild the ${NAME} Docker image;
