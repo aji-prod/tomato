@@ -422,10 +422,15 @@ operations:
   ${NAME} version [all|number]   # show version ${VERSION};
   ${NAME} (usage|help)           # this help message.
 
+  ${NAME} -Syu                   # or any other short variant (-Syuu, -Suy,
+                                 # ...), will update the ${NAME} repository,
+                                 # and the host system.
+
 options:
   ${NAME} --rebuild-image        # build or rebuild the ${NAME} Docker image;
   ${NAME} --remove-image         # remove the ${NAME} Docker image;
   ${NAME} --tomato-config <path> # path to custom ${NAME} config.
+
 
   ${NAME^} v${VERSION}
 EOF
@@ -522,7 +527,7 @@ main(){
 		del|-R)
 			shift; del $@
 			;;
-		refresh|-Syu)
+		refresh|-S*y*u|-S*u*y)
 			shift; refresh $@
 			;;
 		version|-V)

@@ -28,6 +28,10 @@ operations:
   tomato version [number]       # show version 0.3.0;
   tomato (usage|help)           # this help message.
 
+  tomato -Syu                   # or any other short variant (-Syuu, -Suy,
+                                # ...), will update the tomato repository,
+                                # and the host system.
+
 options:
   tomato --rebuild-image        # build or rebuild the tomato Docker image;
   tomato --remove-image         # remove the tomato Docker image;
@@ -124,9 +128,18 @@ The host can be updated with [pacman update command]:
 
 > `tomato -Syu`
 
-Which is a an alias to:
+Which is an alias to:
 
-> `pacman -Syuw && tomato refresh && pacman -Syu`
+> `pacman -Syu && tomato refresh && pacman -Syu`
+
+Note that any variation of the flag `-Syu` flag will refresh the [tomato] repository and be passed to the
+[pacman] command, such as:
+
+> `tomato -Suuy`
+
+will be an alias to:
+
+> `pacman -Suuy && tomato refresh && pacman -Suuy`
 
 ### List tomato repository packages
 
