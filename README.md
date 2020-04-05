@@ -37,7 +37,7 @@ options:
   tomato --remove-image         # remove the tomato Docker image;
   tomato --tomato-config <path> # path to custom tomato config.
 
-  Tomato v0.3.0
+  Tomato v0.3.1
 ```
 
 ## Installation
