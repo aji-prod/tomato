@@ -143,6 +143,30 @@ _opts(){
 	done
 }
 
+_aurflags(){
+	editmode=0
+	for arg in $@;
+	do
+		case $arg in
+			--confirm|--edit)
+				editmode=1
+				break;;
+			*)
+				;;
+		esac
+	done
+
+	for flag in ${AURFLAGS};
+	do
+		case $flag in
+			--noedit|--noconfirm)
+				test ${editmode} -eq 0 && echo "$flag";;
+			*)
+				echo "$flag";;
+		esac
+	done
+}
+
 _rmglob(){
 	test ! -d $1 || find "$1" -xdev -type f -name "$2" -delete
 }
@@ -258,11 +282,13 @@ _makepkgs(){
 	allbuilt=0
 	pkgs=$(_noopts $@)
 	opts=$(_opts $@)
+	aurflags=$(_aurflags $opts)
+	_hint AURFLAGS ${aurflags}
 	_makepkgconf
 	for pkg in $pkgs;
 	do
 		_hint ${NAME^} building $pkg...
-		_aur -S $AURFLAGS --mflags=--skippgpcheck $opts $pkg
+		_aur -S $aurflags --mflags=--skippgpcheck $opts $pkg
 		ret=$?
 		if test 0 -ne $ret
 		then
