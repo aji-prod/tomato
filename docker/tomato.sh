@@ -201,6 +201,38 @@ _fixup(){
 		-exec chmod a+r -- "{}/__init__.py" \;
 }
 
+_editor(){
+	# Set the EDITOR for editing the PKGBUILDs
+	# from pikaur;
+	#
+	# The first argument can be written as
+	# "package-name:command-name"
+	#
+	# This command should only be run within the
+	# Dockerfile.
+	test -n "$1" || return
+
+	package=$( echo $1 | cut -d : -f 1)
+	editor=$( echo $1 | cut -d : -s -f 2)
+	shift
+	commands="$*"
+	test -n "$commands" && commands=" ${commands}"
+
+	if test -z "${editor}"
+	then
+		editor="${package}"
+		package=$(basename "${package}")
+	fi
+
+	if test -n "${package}" -a -n "${editor}";
+	then
+		editor="${editor}${commands}"
+		_hint Installing ${package} as EDITOR=\"${editor}\"
+		_aur -Sy ${AURFLAGS} ${package} && \
+		echo EDITOR=\"${editor}\" >> /etc/environment
+	fi
+}
+
 _volfile(){
 	volume="$1"
 	target="$2"
@@ -283,7 +315,6 @@ _makepkgs(){
 	pkgs=$(_noopts $@)
 	opts=$(_opts $@)
 	aurflags=$(_aurflags $opts)
-	_hint AURFLAGS ${aurflags}
 	_makepkgconf
 	for pkg in $pkgs;
 	do
@@ -568,6 +599,9 @@ main(){
 			;;
 		fixup) # not documented
 			shift; _fixup $@
+			;;
+		editor) # not documented
+			shift; _editor $@
 			;;
 		*)
 			echo "Operation \"${NAME} $1\" not supported," \

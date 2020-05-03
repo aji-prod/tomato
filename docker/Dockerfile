@@ -72,6 +72,16 @@ COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 #       within a docker image.
 RUN sudo -n -- /home/tomato/tomato.sh fixup
 
+# Setup EDITOR
+# Note: as the editor is a volatile argument, set it up last to avoid
+#       rebuilding all the the previous stages in case of change.
+#
+# Note: core/vi doesn't cope well with pikaur where the PKGBUILDs
+#       cannot be edited - let to use vim by default.
+ARG TOMATO_EDITOR=extra/vim:/usr/bin/vim
+RUN test -n "${TOMATO_EDITOR}" && \
+    sudo -n -- /home/tomato/tomato.sh editor "${TOMATO_EDITOR}"
+
 # Volume:
 # 	Let to share a same mirrorlist
 VOLUME ["/home/tomato/mirrorlist"]
