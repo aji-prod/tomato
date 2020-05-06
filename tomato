@@ -10,6 +10,7 @@ TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato}"
 TOMATO_MIRRORLIST="${TOMATO_MIRRORLIST:-/etc/pacman.d/mirrorlist}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
+TOMATO_EDITOR="${TOMATO_EDITOR:-${EDITOR:-extra/vim:/usr/bin/vim}}"
 
 PACMAN=${PACMAN:-pacman}
 
@@ -57,7 +58,6 @@ _loadconf(){
 	#      http://mywiki.wooledge.org:80/BashFAQ/024
 	if test -f "$1";
 	then
-		_hint "Loading config from $1"
 		while IFS= read -r v;
 		do
 			if $(echo $v | grep -q -s -E -e "^[A-Z_]+=.*$");
@@ -101,7 +101,8 @@ _build(){
 	       "this variable locates where the Dockerfile and its assets " \
 	       "are."
 
-	_docker build --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+	editor="--build-arg TOMATO_EDITOR=${TOMATO_EDITOR}"
+	_docker build ${editor} --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
 }
 
 _remove(){
