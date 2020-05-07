@@ -214,6 +214,7 @@ _editor(){
 
 	package=$( echo $1 | cut -d : -f 1)
 	editor=$( echo $1 | cut -d : -s -f 2)
+	tomato_editor="$*"
 	shift
 	commands="$*"
 	test -n "$commands" && commands=" ${commands}"
@@ -230,6 +231,19 @@ _editor(){
 		_hint Installing ${package} as EDITOR=\"${editor}\"
 		_aur -Sy ${AURFLAGS} ${package} && \
 		echo EDITOR=\"${editor}\" >> /etc/environment
+	fi
+
+	echo TOMATO_EDITOR=\"${tomato_editor}\" >> /etc/environment
+}
+
+_checkeditor(){
+	if test "${TOMATO_EDITOR}" != "${_TOMATO_EDITOR}";
+	then
+		_hint "The TOMATO_EDITOR=\"${_TOMATO_EDITOR}\" " \
+		      "configuration is not yet applied, " \
+		      "re-run the command with the --rebuild-image flag." \
+		      "The actual configuration is " \
+		      "TOMATO_EDITOR=\"${TOMATO_EDITOR}\"."
 	fi
 }
 
@@ -315,6 +329,7 @@ _makepkgs(){
 	pkgs=$(_noopts $@)
 	opts=$(_opts $@)
 	aurflags=$(_aurflags $opts)
+	_checkeditor
 	_makepkgconf
 	for pkg in $pkgs;
 	do

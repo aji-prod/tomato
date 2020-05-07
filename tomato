@@ -129,8 +129,9 @@ _run(){
 		shift
 	fi
 
+	editor="--env _TOMATO_EDITOR=${TOMATO_EDITOR}"
 	vol=$(_volumes)
-	_docker run --rm --interactive $tty $vol "${TOMATO_NAME}" $@
+	_docker run --rm --interactive $tty $editor $vol "${TOMATO_NAME}" $@
 }
 
 _tomato(){

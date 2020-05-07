@@ -1,4 +1,6 @@
 User_Alias	TOMUSER	= tomato
 Cmnd_Alias	TOMATO	= /home/tomato/tomato.sh
 
+Defaults!TOMATO	env_keep+="_TOMATO_EDITOR"
+
 TOMUSER	ALL=(root) NOPASSWD: TOMATO
