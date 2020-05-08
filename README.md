@@ -35,7 +35,8 @@ operations:
 options:
   tomato --rebuild-image        # build or rebuild the tomato Docker image;
   tomato --remove-image         # remove the tomato Docker image;
-  tomato --tomato-config <path> # path to custom tomato config.
+  tomato --tomato-config <path> # path to custom tomato config;
+  tomato --edit                 # prompt to edit PKGBUILDs or build files.
 
   Tomato v0.3.1
 ```
