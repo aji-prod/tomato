@@ -175,6 +175,7 @@ TOMATO_PKGDIR=/var/pkg/tomato             # The tomato's repository directory
 TOMATO_PACDIR=/etc/pacman.d/mirrorlist    # The host's mirrorlist
 TOMATO_MAKEPKGCONF=                       # Let to use a specific makepkg.conf
 TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg  # The pacman's cache directory
+TOMATO_EDITOR=extra/vim:/usr/bin/vim      # The tomato's editor
 ```
 
 ### makepkg.conf
@@ -183,6 +184,12 @@ TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg  # The pacman's cache directory
 All the packages built by [tomato] will be attributed to the [Françoise 'Ed' Appledelhi &lt;ed@tomato.earth&gt;] packager. The others options have the [makepkg.conf defaults] provided by [ArchLinux].
 
 To use another [makepkg.conf] override the `TOMATO_MAKEPKGCONF=` key.
+
+### $EDITOR and TOMATO_EDITOR=
+
+[tomato] uses the environment variable [$EDITOR] as editor if no `TOMATO_EDITOR=` configuration was defined, or [vim] if neither is set.
+
+To use another [$EDITOR] override the `TOMATO_EDITOR=` key.
 
 ## GPG Signatures
 
@@ -276,6 +283,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
 
 
+  [$EDITOR]: https://wiki.archlinux.org/index.php/Environment_variables#Default_programs
   [AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
   [AUR package]: https://aur.archlinux.org/packages/tomato/
   [AUR packages]: https://www.archlinux.org/packages/
@@ -315,3 +323,4 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
   [systemd]: https://wiki.archlinux.org/index.php/Systemd
   [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
   [tomato]: https://github.com/aji-prod/tomato
+  [vim]: https://www.vim.org/
