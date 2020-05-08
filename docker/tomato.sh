@@ -135,6 +135,8 @@ _opts(){
 	do
 		case $arg in
 			# AUR authorized flags
+			--edit)
+				_haseditor && echo "$arg";;
 			-*)
 				echo "$arg";;
 			*)
@@ -228,12 +230,32 @@ _editor(){
 	if test -n "${package}" -a -n "${editor}";
 	then
 		editor="${editor}${commands}"
-		_hint Installing ${package} as EDITOR=\"${editor}\"
-		_aur -Sy ${AURFLAGS} ${package} && \
-		echo EDITOR=\"${editor}\" >> /etc/environment
+		_hint "Installing ${package} as EDITOR=\"${editor}\""
+		(	_aur -Sy ${AURFLAGS} ${package}               && \
+			echo EDITOR=\"${editor}\" >> /etc/environment
+		) || (
+			_warn "TOMATO_EDITOR=\"${tomato_editor}\" can not be" \
+			      "used as EDITOR=\"${editor}\".";
+			_warn "To use another \$EDITOR override your "        \
+			      "TOMATO_EDITOR= configuration.";
+			_warn "${NAME^} will not accept the --edit flag."
+		)
 	fi
 
 	echo TOMATO_EDITOR=\"${tomato_editor}\" >> /etc/environment
+}
+
+_haseditor(){
+	test -n "${EDITOR}"
+	haseditor=$?
+
+	if test $haseditor
+	then
+		_warn "No \$EDITOR is set, the --edit flag will be ignored."
+		_warn "Use the TOMATO_EDITOR= configuration key to set one."
+	fi
+
+	return $haseditor
 }
 
 _checkeditor(){
