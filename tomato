@@ -92,7 +92,7 @@ _dockerd(){
 }
 
 _docker(){
-	_dockerd && /usr/bin/docker $@
+	_dockerd && /usr/bin/docker "$@"
 }
 
 _build(){
@@ -102,8 +102,8 @@ _build(){
 	       "this variable locates where the Dockerfile and its assets " \
 	       "are."
 
-	editor="--build-arg TOMATO_EDITOR=${TOMATO_EDITOR}"
-	_docker build ${editor} --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
+	_docker build --build-arg "${editor}" --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
 }
 
 _remove(){
@@ -129,9 +129,9 @@ _run(){
 		shift
 	fi
 
-	editor="--env _TOMATO_EDITOR=${TOMATO_EDITOR}"
+	editor="_TOMATO_EDITOR=${TOMATO_EDITOR}"
 	vol=$(_volumes)
-	_docker run --rm --interactive $tty $editor $vol "${TOMATO_NAME}" $@
+	_docker run --rm --interactive $tty --env "${editor}" $vol "${TOMATO_NAME}" $@
 }
 
 _tomato(){
