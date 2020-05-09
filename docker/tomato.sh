@@ -246,16 +246,14 @@ _editor(){
 }
 
 _haseditor(){
-	test -n "${EDITOR}"
-	haseditor=$?
-
-	if test $haseditor
+	if test -z "${EDITOR}"
 	then
 		_warn "No \$EDITOR is set, the --edit flag will be ignored."
 		_warn "Use the TOMATO_EDITOR= configuration key to set one."
+		return 1
+	else
+		return 0
 	fi
-
-	return $haseditor
 }
 
 _checkeditor(){
