@@ -53,6 +53,14 @@ _hint(){
 	fi
 }
 
+_mirrorlist(){
+	default_mirror='Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'
+
+	(test -f "${TOMATO_MIRRORLIST}" &&
+	 grep -h -m 1 -G -e "^Server *=" -- "${TOMATO_MIRRORLIST}") ||
+	 echo "${default_mirror}"
+}
+
 _loadconf(){
 	# see: https://web.archive.org/web/20180406004235/
 	#      http://mywiki.wooledge.org:80/BashFAQ/024
@@ -103,7 +111,8 @@ _build(){
 	       "are."
 
 	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
-	_docker build --build-arg "${editor}" --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+	mirror="TOMATO_MIRROR=$(_mirrorlist)"
+	_docker build --build-arg "${editor}" --build-arg "${mirror}" --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
 }
 
 _remove(){

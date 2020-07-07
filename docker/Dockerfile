@@ -11,8 +11,10 @@ VOLUME ["/var/pkg/tomato"]
 #
 # Note: Activate the [multilib] repository as it can be required to build
 #       some AUR packages.
-RUN echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'    \
-    > /etc/pacman.d/mirrorlist                                          && \
+ARG TOMATO_MIRROR="Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
+    test -n "${TOMATO_MIRROR}"                                          && \
+    echo "${TOMATO_MIRROR}" > /etc/pacman.d/mirrorlist                  && \
     rm /usr/share/libalpm/hooks/package-cleanup.hook                    && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
