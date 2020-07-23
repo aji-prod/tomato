@@ -25,7 +25,7 @@ operations:
   tomato list    [all|status|split]
                                 # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
-  tomato version [number]       # show version 0.4.0;
+  tomato version [number]       # show version 0.4.1;
   tomato (usage|help)           # this help message.
 
   tomato -Syu                   # or any other short variant (-Syuu, -Suy,
@@ -38,7 +38,7 @@ options:
   tomato --tomato-config <path> # path to custom tomato config;
   tomato --edit                 # prompt to edit PKGBUILDs or build files.
 
-  Tomato v0.4.0
+  Tomato v0.4.1
 ```
 
 ## Installation
