@@ -12,9 +12,6 @@ TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
 TOMATO_EDITOR="${TOMATO_EDITOR:-${EDITOR:-extra/vim:/usr/bin/vim}}"
 
-# Non document tomato variable
-_TOMATO_MIRRORSERV="${TOMATO_MIRRORSERV:-'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'}"
-
 PACMAN=${PACMAN:-pacman}
 
 # The configuration documentation ensures that the TOMATO_NAME can never be
@@ -59,9 +56,19 @@ _hint(){
 _mirrorlist(){
 	default_mirror='Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'
 
-	(test -f "${TOMATO_MIRRORLIST}" &&
-	 grep -h -m 1 -G -e "^Server *=" -- "${TOMATO_MIRRORLIST}") ||
-	 echo "${default_mirror}"
+	if test -x "/usr/bin/rankmirrors";
+	then
+		/usr/bin/rankmirrors -n 1 -m 1 -r core "${TOMATO_MIRRORLIST}" | \
+			grep -h -G -e "^Server *=" && return
+	fi
+
+	grep -h -G -e "^Server *=" -- "${TOMATO_MIRRORLIST}" | while read server;
+	do
+		name="$(echo "${server}" | cut -d / -f 3 --)"
+		ping -c 1 -W 1 -q -- "${name}" 2>&1 >/dev/null && echo "${server}" && return
+	done
+
+	echo "${default_mirror}"
 }
 
 _loadconf(){
@@ -115,7 +122,10 @@ _build(){
 
 	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
 	mirror="TOMATO_MIRROR=$(_mirrorlist)"
-	_docker build --build-arg "${editor}" --build-arg "${mirror}" --rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+	_docker build \
+		--build-arg "${editor}" \
+		--build-arg "${mirror}" \
+		--rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
 }
 
 _remove(){
