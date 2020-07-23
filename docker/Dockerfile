@@ -11,6 +11,12 @@ VOLUME ["/var/pkg/tomato"]
 #
 # Note: Activate the [multilib] repository as it can be required to build
 #       some AUR packages.
+#
+# Note: We need to fallback to a manual update from the cache in case of
+#       an archlinux-keyring auto update error, to fixe:
+#       > error: key "6D42BDD116E0068F" could not be looked up remotely
+#       > error: required key missing from keyring
+#       > error: failed to commit transaction (unexpected error)
 ARG TOMATO_MIRROR="Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch"
 RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     test -n "${TOMATO_MIRROR}"                                          && \
@@ -19,7 +25,8 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
     pacman-key --init && pacman-key --populate                          && \
-    pacman -Sy   --noconfirm --noprogressbar --needed archlinux-keyring && \
+    ( pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring || \
+      pacman -U  --noconfirm --noprogressbar --needed /var/cache/pacman/pkg/archlinux-keyring-* ) && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
     pacman -S    --noconfirm --noprogressbar --needed base-devel           \
                                                       python               \
