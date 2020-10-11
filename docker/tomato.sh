@@ -509,6 +509,9 @@ operations:
   ${NAME} add      <package(s)>  # add a package to the maintained list;
   ${NAME} del      <package(s)>  # remove a package from the maintained list;
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
+  ${NAME} reset                  # rebuild ${NAME} repository,
+  ${____}                        # will remove non building or non existing 
+  ${____}                        # packages;
   ${NAME} list    [all|status|split]
   ${____}                        # list maintained packages;
   ${NAME} search   <package(s)>  # search an AUR package;
@@ -581,8 +584,8 @@ del(){
 	_removedb  $pkgs &&
 	_hint The packages are no more maintained \
 	      but the packages files have not been cleaned up, \
-	      call \"$NAME refresh\" to clear caches \
-	      and remove unused dependencies.
+	      call \"$NAME reset\" to clear caches, \
+	      remove unused dependencies and leftover packages.
 }
 
 refresh(){
@@ -599,6 +602,16 @@ refresh(){
 	(_makepkgs $opts $pkgs  || true)  &&
 	(_pushpkgs 2> /dev/null || true)  &&
 	_cleanpkgs                        &&
+	_updatedb
+}
+
+reset(){
+	pkgs=$(_listpkgs)
+	opts=$(_opts $@)
+	_upgrade                          &&
+	_delpkgs                          &&
+	(_makepkgs $opts $pkgs  || true)  &&
+	(_pushpkgs 2> /dev/null || true)  &&
 	_updatedb
 }
 
@@ -623,6 +636,9 @@ main(){
 			;;
 		refresh|-S*y*u|-S*u*y)
 			shift; refresh $@
+			;;
+		reset)
+			shift; reset $@
 			;;
 		version|-V)
 			version $2
