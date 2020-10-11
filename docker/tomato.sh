@@ -409,7 +409,7 @@ _statusdb(){
 		_hint -n "Checking packages status"
 	fi
 
-	IFS=$'\n' packages=( $(_listdb) )
+	IFS=$'\n' packages=( $(_listdb; _unknownpkgs) )
 	for package in ${packages[@]};
 	do
 		IFS=$' ' package=(${package})
