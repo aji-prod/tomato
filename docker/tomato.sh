@@ -512,7 +512,7 @@ operations:
   ${NAME} add      <package(s)>  # add a package to the maintained list;
   ${NAME} del      <package(s)>  # remove a package from the maintained list;
   ${NAME} refresh [<package(s)>] # update ${NAME} repository;
-  ${NAME} reset                  # rebuild ${NAME} repository,
+  ${NAME} sweep                  # rebuild ${NAME} repository,
   ${____}                        # will remove non building or non existing 
   ${____}                        # packages;
   ${NAME} list    [all|status|split]
@@ -587,7 +587,7 @@ del(){
 	_removedb  $pkgs &&
 	_hint The packages are no more maintained \
 	      but the packages files have not been cleaned up, \
-	      call \"$NAME reset\" to clear caches, \
+	      call \"$NAME sweep\" to clear caches, \
 	      remove unused dependencies and leftover packages.
 }
 
@@ -608,7 +608,7 @@ refresh(){
 	_updatedb
 }
 
-reset(){
+sweep(){
 	pkgs=$(_listpkgs)
 	opts=$(_opts $@)
 	_upgrade                          &&
@@ -640,8 +640,8 @@ main(){
 		refresh|-S*y*u|-S*u*y)
 			shift; refresh $@
 			;;
-		reset)
-			shift; reset $@
+		sweep)
+			shift; sweep $@
 			;;
 		version|-V)
 			version $2
