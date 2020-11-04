@@ -435,6 +435,9 @@ _statusdb(){
 		elif test -n "${aurscm}";
 		then
 			pkgstatus="Rolling-update"
+		elif test -z "${pkgver}"
+		then
+			pkgstatus="Waiting-update"
 		elif test "${aurversion}" != "${pkgver}"
 		then
 			pkgstatus="Pending-update"
