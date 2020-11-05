@@ -22,6 +22,9 @@ operations:
   tomato add      <package(s)>  # add a package to the maintained list;
   tomato del      <package(s)>  # remove a package from the maintained list;
   tomato refresh [<package(s)>] # update tomato repository;
+  tomato sweep                  # rebuild tomato repository,
+                                # will remove non building or non existing 
+                                # packages;
   tomato list    [all|status|split]
                                 # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
@@ -141,6 +144,16 @@ Note that any variation of the flag `-Syu` flag will refresh the [tomato] reposi
 will be an alias to:
 
 > `pacman -Suuy && tomato refresh && pacman -Suuy`
+
+### Rebuild all the packages and remove leftover dependencies
+
+Some package dependencies may resides over time within the [tomato] repository, like after a `tomato del` command.
+
+To removed unused dependencies from the [tomato] repository:
+
+> `tomato sweep`
+
+Note that every packages will be rebuilt, non building packages will be marked as waiting for an update, but will no more be available from the [tomato] repository.
 
 ### List tomato repository packages
 
@@ -284,44 +297,44 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
 
 
-  [$EDITOR]: https://wiki.archlinux.org/index.php/Environment_variables#Default_programs
-  [AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
-  [AUR package]: https://aur.archlinux.org/packages/tomato/
-  [AUR packages]: https://www.archlinux.org/packages/
-  [AUR status]: https://aur.archlinux.org/packages/?K=status&SB=m&SO+=+d
-  [AUR]: https://aur.archlinux.org/
-  [ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
-  [ArchLinux]: https://www.archlinux.org/
-  [Cowboy Bebop]: https://en.wikipedia.org/wiki/Cowboy_Bebop
-  [Docker image]: https://docs.docker.com/engine/docker-overview/#docker-objects
-  [Docker volumes]: https://docs.docker.com/storage/volumes/
-  [Docker]: https://docs.docker.com/
-  [Edward Wong Hau Pepelu Tivrusky IV]: http://cowboybebop.wikia.com/wiki/Edward
-  [Françoise 'Ed' Appledelhi &lt;ed@tomato.earth&gt;]: http://cowboybebop.wikia.com/wiki/Edward
-  [GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
-  [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
-  [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
-  [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
-  [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
-  [makepkg.conf defaults]: https://git.archlinux.org/svntogit/packages.git/tree/trunk/makepkg.conf?h=packages/pacman
-  [makepkg.conf]: https://www.archlinux.org/pacman/makepkg.conf.5.html
-  [makepkg]: https://wiki.archlinux.org/index.php/Makepkg#Usage
-  [mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
-  [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
-  [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
-  [pacman uninstall command]: https://wiki.archlinux.org/index.php/Pacman#Removing_packages
-  [pacman update command]: https://wiki.archlinux.org/index.php/Pacman#Upgrading_packages
-  [pacman usage]: https://wiki.archlinux.org/index.php/Pacman#Usage
-  [pacman wrapper]: https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers
-  [pacman's cache]: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
-  [pacman.conf]: https://wiki.archlinux.org/index.php/Pacman#Configuration
-  [pacman]: https://wiki.archlinux.org/index.php/Pacman
-  [pikaur]: https://github.com/actionless/pikaur
-  [prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.4.1/tomato-0.4.1-1-any.pkg.tar.zst
-  [repose]: https://github.com/vodik/repose
-  [split package]: https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5#PACKAGE_SPLITTING
-  [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
-  [systemd]: https://wiki.archlinux.org/index.php/Systemd
-  [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
-  [tomato]: https://github.com/aji-prod/tomato
-  [vim]: https://www.vim.org/
+[$EDITOR]: https://wiki.archlinux.org/index.php/Environment_variables#Default_programs
+[AUR helper]: https://wiki.archlinux.org/index.php/AUR_helpers
+[AUR package]: https://aur.archlinux.org/packages/tomato/
+[AUR packages]: https://www.archlinux.org/packages/
+[AUR status]: https://aur.archlinux.org/packages/?K=status&SB=m&SO+=+d
+[AUR]: https://aur.archlinux.org/
+[ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
+[ArchLinux]: https://www.archlinux.org/
+[Cowboy Bebop]: https://en.wikipedia.org/wiki/Cowboy_Bebop
+[Docker image]: https://docs.docker.com/engine/docker-overview/#docker-objects
+[Docker volumes]: https://docs.docker.com/storage/volumes/
+[Docker]: https://docs.docker.com/
+[Edward Wong Hau Pepelu Tivrusky IV]: http://cowboybebop.wikia.com/wiki/Edward
+[Françoise 'Ed' Appledelhi &lt;ed@tomato.earth&gt;]: http://cowboybebop.wikia.com/wiki/Edward
+[GPG signatures]: https://wiki.archlinux.org/index.php/Makepkg#Signature_checking
+[GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
+[GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
+[base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
+[key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
+[makepkg.conf defaults]: https://git.archlinux.org/svntogit/packages.git/tree/trunk/makepkg.conf?h=packages/pacman
+[makepkg.conf]: https://www.archlinux.org/pacman/makepkg.conf.5.html
+[makepkg]: https://wiki.archlinux.org/index.php/Makepkg#Usage
+[mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
+[pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
+[pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
+[pacman uninstall command]: https://wiki.archlinux.org/index.php/Pacman#Removing_packages
+[pacman update command]: https://wiki.archlinux.org/index.php/Pacman#Upgrading_packages
+[pacman usage]: https://wiki.archlinux.org/index.php/Pacman#Usage
+[pacman wrapper]: https://wiki.archlinux.org/index.php/AUR_helpers#Pacman_wrappers
+[pacman's cache]: https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache
+[pacman.conf]: https://wiki.archlinux.org/index.php/Pacman#Configuration
+[pacman]: https://wiki.archlinux.org/index.php/Pacman
+[pikaur]: https://github.com/actionless/pikaur
+[prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.4.1/tomato-0.4.1-1-any.pkg.tar.zst
+[repose]: https://github.com/vodik/repose
+[split package]: https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5#PACKAGE_SPLITTING
+[systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
+[systemd]: https://wiki.archlinux.org/index.php/Systemd
+[tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
+[tomato]: https://github.com/aji-prod/tomato
+[vim]: https://www.vim.org/
