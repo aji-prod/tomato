@@ -132,6 +132,11 @@ _remove(){
 	_docker image rm "${TOMATO_NAME}"
 }
 
+_which(){
+	/usr/bin/which -- "$1" 2> /dev/null || 
+		echo -n $1
+}
+
 _run(){
 	image=$(_docker images --format="{{.Repository}}" "${TOMATO_NAME}") ||
 		exit $?
@@ -151,7 +156,7 @@ _run(){
 		shift
 	fi
 
-	editor="_TOMATO_EDITOR=${TOMATO_EDITOR}"
+	editor="_TOMATO_EDITOR=$(_which ${TOMATO_EDITOR})"
 	vol=$(_volumes)
 	_docker run --rm --interactive $tty --env "${editor}" $vol "${TOMATO_NAME}" $@
 }
