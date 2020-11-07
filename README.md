@@ -153,7 +153,7 @@ To removed unused dependencies from the [tomato] repository:
 
 > `tomato sweep`
 
-Note that every packages will be rebuilt, non building packages will be marked as waiting for an update, but will no more be available from the [tomato] repository.
+Note that every packages will be rebuilt, packages that can no longer be built will be marked as waiting for an update, and will no more be available from the [tomato] repository until fixed.
 
 ### List tomato repository packages
 
