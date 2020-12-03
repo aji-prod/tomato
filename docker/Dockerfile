@@ -55,15 +55,12 @@ USER tomato
 WORKDIR /home/tomato
 
 # Setup pikaur
-# Note: pikaur has no build dependencies, we can pass the --nodeps here and
-#       let pacman to install its dependencies;
-#       BUT IT HAS a (non declared) pakckage() deps, wich is python, see above.
 ADD --chown=tomato \
     https://aur.archlinux.org/cgit/aur.git/snapshot/pikaur.tar.gz .
 RUN tar -xf pikaur.tar.gz                                              && \
     cd pikaur                                                          && \
     sudo pacman -Syuu --noconfirm --noprogressbar --needed             && \
-    makepkg --nocolor --noprogressbar --nodeps                         && \
+    makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps  && \
     sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*  && \
     cd && rm -rf pikaur*
 
