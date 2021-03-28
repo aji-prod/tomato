@@ -4,6 +4,7 @@ function _tomato() {
 	flags=("--tomato-config"
 	       "--remove-image"
 	       "--rebuild-image"
+	       "--edit"
 	       "--help"
 	       "-Syu")
 	commands=("add"
