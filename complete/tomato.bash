@@ -27,7 +27,8 @@ function _tomato() {
 			;;
 		list)
 			COMPREPLY=( $(compgen -W "all" -- $cur) \
-				    $(compgen -W "status" -- $cur) )
+				    $(compgen -W "status" -- $cur) \
+			            $(compgen -W "split" -- $cur) )
 			return 0
 			;;
 		version|-V)
