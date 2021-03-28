@@ -11,6 +11,7 @@ function _tomato() {
 		  "refresh"
 		  "list"
 		  "search"
+		  "sweep"
 		  "version"
 		  "help"
 		  "usage")
