@@ -161,6 +161,16 @@ _run(){
 	_docker run --rm --interactive $tty --env "${editor}" $vol "${TOMATO_NAME}" $@
 }
 
+_attach(){
+	image=$(_docker ps \
+		--latest \
+		--filter "ancestor=${TOMATO_NAME}" \
+		--filter "status=running" \
+		--format {{.ID}})
+
+	test -n "${image}" && _docker attach ${image} 2> /dev/null
+}
+
 _tomato(){
 	ver=$(_run version number) || exit $?
 	test "${ver}" = "${VERSION}" ||
@@ -170,7 +180,7 @@ _tomato(){
 
 	# pass the --tty option here only, and do not include in the _run()
 	# command as the $(_run version number) will be scrambled.
-	_run --tty $@
+	( test -z "$*" && _attach ) || _run --tty $@
 }
 
 _environment(){
