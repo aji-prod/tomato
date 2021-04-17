@@ -658,6 +658,9 @@ main(){
 		editor) # not documented
 			shift; _editor $@
 			;;
+		status) # not documented - shortcut for `list status`
+			list $@
+			;;
 		*)
 			echo "Operation \"${NAME} $1\" not supported," \
 			     "see \"${NAME} help\"."; return 1
