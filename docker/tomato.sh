@@ -397,6 +397,7 @@ _removedb(){
 }
 
 _listdb(){
+	test -f "${REPODB}"        &&
 	repose --root="${REPODIR}" \
 	       --pool="${REPODIR}" \
 	       --list              \
