@@ -168,7 +168,9 @@ _attach(){
 		--filter "status=running" \
 		--format {{.ID}})
 
-	test -n "${image}" && _docker attach ${image} 2> /dev/null
+	test -n "${image}" && (
+	_hint "Attaching ${NAME} to the current running docker...";
+	_docker attach "${image}" 2> /dev/null)
 }
 
 _tomato(){
