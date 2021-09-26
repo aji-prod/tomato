@@ -619,11 +619,6 @@ sweep(){
 	_updatedb
 }
 
-fixup(){
-	_fixup
-}
-
-
 main(){
 	case $1 in
 		list|-Q)
