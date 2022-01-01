@@ -24,9 +24,9 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     rm /usr/share/libalpm/hooks/package-cleanup.hook                    && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
-    pacman-key --init && pacman-key --populate                          && \
-    ( pacman -Sy --noconfirm --noprogressbar --needed archlinux-keyring || \
-      pacman -U  --noconfirm --noprogressbar --needed /var/cache/pacman/pkg/archlinux-keyring-* ) && \
+    pacman-key   --init && pacman-key --populate                        && \
+    ( pacman -Sy --noconfirm --noprogressbar archlinux-keyring || \
+      pacman -U  --noconfirm --noprogressbar /var/cache/pacman/pkg/archlinux-keyring-* ) && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
     pacman -S    --noconfirm --noprogressbar --needed base-devel           \
                                                       python               \
