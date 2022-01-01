@@ -55,11 +55,13 @@ USER tomato
 WORKDIR /home/tomato
 
 # Setup pikaur
+# Note: `python-commonmark` is required by pikaur and registered by its
+#       dependencies but some pikaur's scripts are trigged too soon.
 ADD --chown=tomato \
     https://aur.archlinux.org/cgit/aur.git/snapshot/pikaur.tar.gz .
 RUN tar -xf pikaur.tar.gz                                              && \
     cd pikaur                                                          && \
-    sudo pacman -Syuu --noconfirm --noprogressbar --needed             && \
+    sudo pacman -Syuu --noconfirm --noprogressbar --needed --asdeps python-commonmark && \
     makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps  && \
     sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*  && \
     cd && rm -rf pikaur*
