@@ -31,7 +31,8 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     pacman -S    --noconfirm --noprogressbar --needed base-devel           \
                                                       python               \
                                                       repose               \
-                                                      pacman-contrib
+                                                      pacman-contrib    && \
+    pacman -Scc --noconfirm --noprogressbar
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
 #
@@ -64,6 +65,7 @@ RUN tar -xf pikaur.tar.gz                                              && \
     sudo pacman -Syuu --noconfirm --noprogressbar --needed --asdeps python-commonmark && \
     makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps  && \
     sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*  && \
+    sudo pacman -Scc --noconfirm --noprogressbar                       && \
     cd && rm -rf pikaur*
 
 COPY --chown=tomato pikaur.conf .config/pikaur.conf
@@ -88,7 +90,8 @@ RUN sudo -n -- /home/tomato/tomato.sh fixup
 #       cannot be edited - let to use vim by default.
 ARG TOMATO_EDITOR=extra/vim:/usr/bin/vim
 RUN test -z "${TOMATO_EDITOR}"          || \
-    sudo -n -- /home/tomato/tomato.sh editor "${TOMATO_EDITOR}"
+    sudo -n -- /home/tomato/tomato.sh editor "${TOMATO_EDITOR}" && \
+    sudo pacman -Scc --noconfirm --noprogressbar
 
 # Volume:
 # 	Let to share a same mirrorlist
