@@ -113,6 +113,10 @@ _docker(){
 	_dockerd && /usr/bin/docker "$@"
 }
 
+_id(){
+	_docker image ls --filter reference="${TOMATO_NAME}:latest" --format {{.ID}}
+}
+
 _build(){
 	test -n "${TOMATO_IMGDIR}" ||
 	_error "The TOMATO_IMGDIR is not set, " \
@@ -122,14 +126,19 @@ _build(){
 
 	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
 	mirror="TOMATO_MIRROR=$(_mirrorlist)"
+	oldimage=$(_id)
 	_docker build \
 		--build-arg "${editor}" \
 		--build-arg "${mirror}" \
-		--rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}"
+		--rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}" && \
+		(test "${oldimage}" = "$(_id)" || _remove "${oldimage}")
 }
 
 _remove(){
-	_docker image rm "${TOMATO_NAME}"
+	if test -n "$1";
+	then
+		_docker image rm "$1"
+	fi
 }
 
 _which(){
@@ -262,7 +271,7 @@ main(){
 	quitifnoargs=0
 	if test ${remove} -eq 1;
 	then
-		_remove && _hint "${TOMATO_NAME} image removed."
+		_remove "${TOMATO_NAME}" && _hint "${TOMATO_NAME} image removed."
 		quitifnoargs=1
 
 	fi
