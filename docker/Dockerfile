@@ -21,7 +21,6 @@ ARG TOMATO_MIRROR="Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch"
 RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     test -n "${TOMATO_MIRROR}"                                          && \
     echo "${TOMATO_MIRROR}" > /etc/pacman.d/mirrorlist                  && \
-    rm /usr/share/libalpm/hooks/package-cleanup.hook                    && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
     pacman-key   --init && pacman-key --populate                        && \
@@ -32,7 +31,7 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
                                                       python               \
                                                       repose               \
                                                       pacman-contrib    && \
-    pacman -Scc --noconfirm --noprogressbar
+    rm /usr/share/libalpm/hooks/package-cleanup.hook
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
 #
