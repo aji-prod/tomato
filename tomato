@@ -54,7 +54,7 @@ _hint(){
 }
 
 _mirrorlist(){
-	default_mirror='Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch'
+	default_mirror=''
 
 	if test -x "/usr/bin/rankmirrors";
 	then
@@ -277,7 +277,7 @@ main(){
 	fi
 	if test ${rebuild} -eq 1;
 	then
-		_build && _hint "${TOMATO_NAME} image rebuilt."
+		_build ${default_mirrors} && _hint "${TOMATO_NAME} image rebuilt."
 		quitifnoargs=1
 	fi
 
