@@ -1,4 +1,6 @@
-FROM archlinux/base
+# Note: Use the base base-devel docker image as we want the base-devel
+#       packages anyway for building the AUR's packages.
+FROM archlinux:base-devel
 
 # Volume:
 # 	Let to share the same writeable pacman's cache from the host
@@ -21,7 +23,6 @@ ARG TOMATO_MIRROR="Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch"
 RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     test -n "${TOMATO_MIRROR}"                                          && \
     echo "${TOMATO_MIRROR}" > /etc/pacman.d/mirrorlist                  && \
-    rm /usr/share/libalpm/hooks/package-cleanup.hook                    && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
     pacman-key   --init && pacman-key --populate                        && \
