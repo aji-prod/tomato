@@ -20,7 +20,7 @@ help:
 
 
 image:	docker/Dockerfile
-	./tomato "--tomato-config=$(CONF)" --rebuild-image
+	./tomato "--tomato-config=$(CONF)" --rebuild-image "$(with)"
 
 $(REPO):
 	-mkdir "$(REPO)"
