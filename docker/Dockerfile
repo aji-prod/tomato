@@ -29,8 +29,7 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     ( pacman -Sy --noconfirm --noprogressbar archlinux-keyring || \
       pacman -U  --noconfirm --noprogressbar /var/cache/pacman/pkg/archlinux-keyring-* ) && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
-    pacman -S    --noconfirm --noprogressbar --needed base-devel           \
-                                                      python               \
+    pacman -S    --noconfirm --noprogressbar --needed python               \
                                                       repose               \
                                                       pacman-contrib    && \
     pacman -Scc --noconfirm --noprogressbar
