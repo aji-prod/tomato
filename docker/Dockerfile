@@ -8,9 +8,6 @@ VOLUME ["/var/cache/pacman/pkg"]
 # 	Publish to the host our packages
 VOLUME ["/var/pkg/tomato"]
 
-# Note: /usr/share/libalpm/hooks/package-cleanup.hook is a bit aggressive
-#       and tries to rm -rf /var/cache/pacman/pkg.
-#
 # Note: Activate the [multilib] repository as it can be required to build
 #       some AUR packages.
 #
