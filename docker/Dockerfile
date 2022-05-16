@@ -16,10 +16,10 @@ VOLUME ["/var/pkg/tomato"]
 #       > error: key "6D42BDD116E0068F" could not be looked up remotely
 #       > error: required key missing from keyring
 #       > error: failed to commit transaction (unexpected error)
-ARG TOMATO_MIRROR="Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+ARG TOMATO_MIRROR=""
 RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
-    test -n "${TOMATO_MIRROR}"                                          && \
-    echo "${TOMATO_MIRROR}" > /etc/pacman.d/mirrorlist                  && \
+    ( ( test -n "${TOMATO_MIRROR}"                                      && \
+        echo "${TOMATO_MIRROR}" > /etc/pacman.d/mirrorlist ) || true )  && \
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist"             \
     >> /etc/pacman.conf                                                 && \
     pacman-key   --init && pacman-key --populate                        && \

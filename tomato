@@ -56,6 +56,12 @@ _hint(){
 _mirrorlist(){
 	default_mirror=''
 
+	if test -n "$1" -a $1 -ne 0;
+	then
+		echo "${default_mirror}"
+		return
+	fi
+
 	if test -x "/usr/bin/rankmirrors";
 	then
 		/usr/bin/rankmirrors -n 1 -m 1 -r core "${TOMATO_MIRRORLIST}" | \
@@ -125,7 +131,8 @@ _build(){
 	       "are."
 
 	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
-	mirror="TOMATO_MIRROR=$(_mirrorlist)"
+	mirror="TOMATO_MIRROR=$(_mirrorlist $1)"
+
 	oldimage=$(_id)
 	_docker build \
 		--build-arg "${editor}" \
@@ -214,6 +221,7 @@ _options(){
 	i=0
 	loadconf=0
 	version=0
+	default_mirrors=0
 
 	for arg in $@;
 	do
@@ -229,6 +237,9 @@ _options(){
 				;;
 			--tomato-config)
 				loadconf=1
+				;;
+			--default-mirror|--default-mirrors)
+				default_mirrors=1
 				;;
 			-S*y*u*|-S*u*y*)
 				update=1
@@ -256,6 +267,7 @@ _options(){
 	export update
 	export update_flag
 	export version
+	export default_mirrors
 }
 
 main(){
