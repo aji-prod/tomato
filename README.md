@@ -1,6 +1,7 @@
 <!--
 vi:wrap:linebreak:nolist:spell:spelllang=en:
 -->
+
 # tomato
 
 > A contained [AUR] (_[ArchLinux] User Respository_) packages and local repository builder.
@@ -37,6 +38,9 @@ operations:
 
 options:
   tomato --rebuild-image        # build or rebuild the tomato Docker image;
+  tomato --default-mirrors      # use the default mirrors of the base Docker
+                                # image, when building or rebuilding the
+                                # tomato Docker image;
   tomato --remove-image         # remove the tomato Docker image;
   tomato --tomato-config <path> # path to custom tomato config;
   tomato --edit                 # prompt to edit PKGBUILDs or build files.
@@ -244,6 +248,12 @@ The [tomato]'s core resides in the script launched inside the [Docker image], an
 
 The `--rebuild-image` option can be combined with any other flags or commands.
 
+#### Using the Default Mirrors of the Docker Image
+
+> `tomato --rebuild-image --default-mirrors`
+
+The `--default-mirrors` option avoids using the host's best first [pacman mirror] to use the default [ArchLinux Docker image mirrors].
+
 ### Pruning the Docker Image
 
 > `tomato --remove-image`
@@ -303,6 +313,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [AUR packages]: https://www.archlinux.org/packages/
 [AUR status]: https://aur.archlinux.org/packages/?K=status&SB=m&SO+=+d
 [AUR]: https://aur.archlinux.org/
+[ArchLinux Docker image mirrors]: https://gitlab.archlinux.org/archlinux/archlinux-docker/-/blob/master/rootfs/etc/pacman.d/mirrorlist
 [ArchLinux Docker image]: https://wiki.archlinux.org/index.php/Docker#Arch_Linux
 [ArchLinux]: https://www.archlinux.org/
 [Cowboy Bebop]: https://en.wikipedia.org/wiki/Cowboy_Bebop
@@ -321,6 +332,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [makepkg]: https://wiki.archlinux.org/index.php/Makepkg#Usage
 [mirrorlist]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
 [pacman install command]: https://wiki.archlinux.org/index.php/Pacman#Installing_specific_packages
+[pacman mirror]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
 [pacman repository]: https://wiki.archlinux.org/index.php/Pacman#Repositories_and_mirrors
 [pacman uninstall command]: https://wiki.archlinux.org/index.php/Pacman#Removing_packages
 [pacman update command]: https://wiki.archlinux.org/index.php/Pacman#Upgrading_packages
@@ -338,3 +350,4 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
 [tomato]: https://github.com/aji-prod/tomato
 [vim]: https://www.vim.org/
+
