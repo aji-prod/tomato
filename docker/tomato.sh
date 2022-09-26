@@ -286,10 +286,10 @@ _mirrorlist(){
 }
 
 _upgrade(){
-	_mirrorlist                 &&
-	_aur -Sy   $AURFLAGS        &&
-	_aur -S    $AURFLAGS pikaur &&
-	_aur -Syuu $AURFLAGS        &&
+	_mirrorlist                                   &&
+	_aur -Sy   $AURFLAGS                          &&
+	_aur -S    $AURFLAGS archlinux-keyring pikaur &&
+	_aur -Syuu $AURFLAGS                          &&
 	# cleanup pikaur build for futher package registration
 	_rmglob "$PKGDIR" "$PKGGLOB"
 }
