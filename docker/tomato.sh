@@ -15,7 +15,7 @@ MIRRORLIST="$(echo ~tomato)/mirrorlist"
 MAKEPKGCONF="$(echo ~tomato)/makepkg.conf"
 CONFIGDIR="$(echo ~tomato)/.config/pacman/"
 
-AURFLAGS="${PACFLAGS:- --needed --noprogressbar --noconfirm}"
+AURFLAGS="${PACFLAGS:- --print-commands --needed --noprogressbar --noconfirm}"
 AUR="/usr/bin/pikaur"
 
 # -- Colors
