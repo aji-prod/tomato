@@ -300,7 +300,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
 > As most of the used tools have a [GPLv2], [GPLv3] or a [compatible license](https://www.gnu.org/licenses/license-list.html#apache2), [tomato] follows the same path.
 
-[Docker] – [Apache 2.0](https://www.docker.com/legal/components-licenses);
+[Docker] – [Apache 2.0](https://github.com/moby/moby/blob/master/LICENSE);
 [pikaur] – [GPLv3](https://github.com/actionless/pikaur/blob/master/LICENSE);
 [repose] – [GPLv2](https://github.com/vodik/repose/blob/master/COPYING);
 [tomato] – [GPLv3](https://github.com/aji-prod/tomato/blob/master/LICENSE).
