@@ -529,8 +529,8 @@ operations:
 options:
   ${NAME} --rebuild-image        # build or rebuild the ${NAME} Docker image;
   ${NAME} --default-mirrors      # use the default mirrors of the base Docker
-                                 # image, when building or rebuilding the
-				 # ${NAME} Docker image;
+  ${____}                        # image, when building or rebuilding the
+  ${____}                        # ${NAME} Docker image;
   ${NAME} --remove-image         # remove the ${NAME} Docker image;
   ${NAME} --tomato-config <path> # path to custom ${NAME} config;
   ${NAME} --edit                 # prompt to edit PKGBUILDs or build files.
