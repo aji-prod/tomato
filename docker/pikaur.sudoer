@@ -1,0 +1,3 @@
+Cmnd_Alias	PIKAUR	= /usr/bin/pikaur
+
+ALL	ALL=(ALL:ALL) NOPASSWD: PIKAUR

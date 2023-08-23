@@ -47,6 +47,7 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 RUN useradd -m tomato
 COPY pacman.sudoer /etc/sudoers.d/pacman
 COPY tomato.sudoer /etc/sudoers.d/tomato
+COPY pikaur.sudoer /etc/sudoers.d/pikaur
 
 # Everything from now is done from the tomato home dir with the tomato user.
 USER tomato
