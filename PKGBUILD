@@ -1,6 +1,6 @@
 # Maintainer : aji <43468383+aji-prod@users.noreply.github.com>
 pkgname=tomato
-pkgver=0.7.2
+pkgver=0.7.3
 pkgrel=1
 pkgdesc="AUR local repository manager"
 arch=('any')
