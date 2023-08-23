@@ -1,3 +1,5 @@
 Cmnd_Alias	PIKAUR	= /usr/bin/pikaur
 
+Defaults!ALL	env_keep+="EDITOR"
+
 ALL	ALL=(ALL:ALL) NOPASSWD: PIKAUR
