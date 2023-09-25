@@ -194,6 +194,7 @@ TOMATO_PACDIR=/etc/pacman.d/mirrorlist    # The host's mirrorlist
 TOMATO_MAKEPKGCONF=                       # Let to use a specific makepkg.conf
 TOMATO_PKGCACHEDIR=/var/cache/pacman/pkg  # The pacman's cache directory
 TOMATO_EDITOR=extra/vim:/usr/bin/vim      # The tomato's editor
+TOMATO_ULIMIT=nofile=1024:524288          # The docker's ulimit option
 ```
 
 ### makepkg.conf
@@ -208,6 +209,12 @@ To use another [makepkg.conf] override the `TOMATO_MAKEPKGCONF=` key.
 [tomato] uses the environment variable [$EDITOR] as editor if no `TOMATO_EDITOR=` configuration was defined, or [vim] if neither is set.
 
 To use another [$EDITOR] override the `TOMATO_EDITOR=` key.
+
+#### TOMATO_ULIMIT
+
+To prevent [fakeroot] to hang inside [Docker] a default [ulimit], through the `--ulimit` option, is passed to the [docker build] and [docker run] commands.
+
+To remove the `--ulimit` option, or to use another value, override the `TOMATO_ULIMIT=` key.
 
 ## GPG Signatures
 
@@ -326,6 +333,9 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [GPLv2]: https://www.gnu.org/licenses/gpl-2.0.html
 [GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
 [base-devel]: https://wiki.archlinux.org/index.php/Arch_User_Repository#Prerequisites
+[docker build]: https://docs.docker.com/engine/reference/commandline/build/
+[docker run]: https://docs.docker.com/engine/reference/commandline/run/
+[fakeroot]: https://man.archlinux.org/man/fakeroot.1.en
 [key=value configuration file]: https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=
 [makepkg.conf defaults]: https://git.archlinux.org/svntogit/packages.git/tree/trunk/makepkg.conf?h=packages/pacman
 [makepkg.conf]: https://www.archlinux.org/pacman/makepkg.conf.5.html
@@ -349,5 +359,5 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [systemd]: https://wiki.archlinux.org/index.php/Systemd
 [tomato name]: http://cowboybebop.wikia.com/wiki/Tomato
 [tomato]: https://github.com/aji-prod/tomato
+[ulimit]: https://man.archlinux.org/man/ulimit.1p
 [vim]: https://www.vim.org/
-

@@ -11,6 +11,7 @@ TOMATO_MIRRORLIST="${TOMATO_MIRRORLIST:-/etc/pacman.d/mirrorlist}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"
 TOMATO_EDITOR="${TOMATO_EDITOR:-${EDITOR:-extra/vim:/usr/bin/vim}}"
+TOMATO_ULIMIT="${TOMATO_ULIMIT:-nofile=1024:524288}"
 
 PACMAN=${PACMAN:-pacman}
 
@@ -132,9 +133,11 @@ _build(){
 
 	editor="TOMATO_EDITOR=${TOMATO_EDITOR}"
 	mirror="TOMATO_MIRROR=$(_mirrorlist $1)"
+	nofile="${TOMATO_ULIMIT:+--ulimit ${TOMATO_ULIMIT}}"
 
 	oldimage=$(_id)
 	_docker build \
+		${nofile} \
 		--build-arg "${editor}" \
 		--build-arg "${mirror}" \
 		--rm --tag "${TOMATO_NAME}" "${TOMATO_IMGDIR}" && \
@@ -174,7 +177,8 @@ _run(){
 
 	editor="_TOMATO_EDITOR=$(_which ${TOMATO_EDITOR})"
 	vol=$(_volumes)
-	_docker run --rm --interactive $tty --env "${editor}" $vol "${TOMATO_NAME}" $@
+	nofile="${TOMATO_ULIMIT:+--ulimit ${TOMATO_ULIMIT}}"
+	_docker run --rm --interactive ${tty} ${nofile} --env "${editor}" ${vol} "${TOMATO_NAME}" $@
 }
 
 _attach(){
