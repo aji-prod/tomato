@@ -213,6 +213,76 @@ _environment(){
 	done
 }
 
+_update(){
+	pkgname=$(python -I - <<EOF
+from collections import namedtuple
+
+GITHUB_RELEASES_API = "https://api.github.com/repos/aji-prod/tomato/releases"
+
+TomatoRelease = namedtuple(
+    "TomatoRelease", ["name", "version", "filename", "size", "url"]
+)
+
+
+def fetch_latest_tomato_release():
+    from fnmatch import fnmatch
+    from urllib.request import urlopen
+    import json
+
+    releases = None
+    with urlopen(GITHUB_RELEASES_API) as data:
+        releases = json.loads(data.read())
+
+    latest = next(
+        (rel for rel in releases if not rel["prerelease"] and not rel["draft"])
+    )
+    name = latest["name"]
+    version = latest["tag_name"]
+    pkg = next(
+        (pkg for pkg in latest["assets"] if fnmatch(pkg["name"], "tomato-*.pkg.tar.*"))
+    )
+    filename = pkg["name"]
+    size = pkg["size"]
+    url = pkg["url"]
+
+    return TomatoRelease(name, version, filename, size, url)
+
+
+def download_tomato_release(tomato):
+    from tempfile import mkdtemp
+    from urllib.request import urlopen
+    import os.path
+
+    tempdir = mkdtemp(prefix="tomato-")
+    with urlopen(tomato.url) as pkg:
+        filename = os.path.join(tempdir, tomato.filename)
+        with open(filename, "wb") as f:
+            f.write(pkg.read())
+        return filename
+
+
+if __name__ == "__main__":
+    import sys
+
+    release = fetch_latest_tomato_release()
+    print("Fetching", release.version, file=sys.stderr)
+    print("Name\t", release.name, file=sys.stderr)
+    print("Package\t", release.filename, file=sys.stderr)
+    print("URL\t", release.url, file=sys.stderr)
+    filename = download_tomato_release(release)
+    print("Download", filename, file=sys.stderr)
+    print(filename)
+EOF
+)
+	if test -n "${pkgname}"
+	then
+		_hint "${TOMATO_NAME^} will be updated from: ${pkgname}"
+		pacman -U "${pkgname}" ||
+			( (command -v sudo >/dev/null) && sudo pacman -U "${pkgname}") ||
+			( (command -v doas >/dev/null) && doas pacman -U "${pkgname}")
+	fi
+}
+
 
 _options(){
 	# out
@@ -226,6 +296,8 @@ _options(){
 	loadconf=0
 	version=0
 	default_mirrors=0
+	remote_update=0
+	remote_updated=0
 
 	for arg in $@;
 	do
@@ -235,6 +307,12 @@ _options(){
 				;;
 			--remove-image)
 				remove=1
+				;;
+			--remote-update)
+				remote_update=1
+				;;
+			--remote-updated)
+				remote_updated=1
 				;;
 			--tomato-config=*)
 				_loadconf "${arg#--tomato-config=}"
@@ -272,6 +350,8 @@ _options(){
 	export update_flag
 	export version
 	export default_mirrors
+	export remote_update
+	export remote_updated
 }
 
 main(){
@@ -284,7 +364,21 @@ main(){
 		return 0
 	fi
 
-	quitifnoargs=0
+	quitifnoargs=${remote_updated}
+	if test ${remote_update} -eq 1 -a ${remote_updated} -eq 0;
+	then
+		# update and execute into the new environment
+		_hint "WARNING: ${TOMATO_NAME^} will be updated from a remote source, " \
+		      "to use only if ${TOMATO_NAME^} is broken."
+		_hint "NOTICE:  To self update ${TOMATO_NAME^}, use: " \
+		      "${TOMATO_NAME} add ${TOMATO_NAME}"
+		if _update;
+		then
+			"$0" --remote-updated $@; 
+			exit $?
+		fi
+		quitifnoargs=1
+	fi
 	if test ${remove} -eq 1;
 	then
 		_remove "${TOMATO_NAME}" && _hint "${TOMATO_NAME} image removed."

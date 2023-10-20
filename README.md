@@ -43,7 +43,9 @@ options:
                                 # tomato Docker image;
   tomato --remove-image         # remove the tomato Docker image;
   tomato --tomato-config <path> # path to custom tomato config;
-  tomato --edit                 # prompt to edit PKGBUILDs or build files.
+  tomato --edit                 # prompt to edit PKGBUILDs or build files;
+  tomato --remote-update        # update tomato from the remote pre-built
+                                # package.
 
   Tomato v0.7.3
 ```

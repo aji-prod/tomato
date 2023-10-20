@@ -493,7 +493,7 @@ _version(){
   0   1      1       1      1     100   
    0  1      1       1      1     00    
     001      1       1      1    00   ${NAME^} v${VERSION}
-      00     1       1      1   00    Copyright (C) 2018-2022 'aji'
+      00     1       1      1   00    Copyright (C) 2018-2023 'aji'
         00   1       1      0000      Licensed under GPLv3
           0000       1   0000           
               00000000000             ${pacman^}
@@ -533,7 +533,9 @@ options:
   ${____}                        # ${NAME} Docker image;
   ${NAME} --remove-image         # remove the ${NAME} Docker image;
   ${NAME} --tomato-config <path> # path to custom ${NAME} config;
-  ${NAME} --edit                 # prompt to edit PKGBUILDs or build files.
+  ${NAME} --edit                 # prompt to edit PKGBUILDs or build files;
+  ${NAME} --remote-update        # update ${NAME} from the remote pre-built
+  ${____}                        # package.
 
 
   ${NAME^} v${VERSION}
