@@ -27,7 +27,6 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
       pacman -U  --noconfirm --noprogressbar /var/cache/pacman/pkg/archlinux-keyring-* ) && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
     pacman -S    --noconfirm --noprogressbar --needed python               \
-                                                      repose               \
                                                       pacman-contrib    && \
     pacman -Scc --noconfirm --noprogressbar
 # Note: python package is a prerequist for pikaur, we are installing it
@@ -35,6 +34,8 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 #
 # Note: repose is used by the tomato.sh script, to update cleanly
 #       the packages files within the repository directory.
+#       -- It was removed from here as the ArchLinu's repose is not yet
+#          patched to support the XDATA package attribute.
 #
 # Note: pacman-contrib is only required for paccache, to clean up the
 #       the old packages within the tomato repository.
@@ -45,9 +46,9 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 #       Tomato is the computer, and a friend from earth,
 #       of Ed from Cowboy Bebop.
 RUN useradd -m tomato
-COPY pacman.sudoer /etc/sudoers.d/pacman
-COPY tomato.sudoer /etc/sudoers.d/tomato
-COPY pikaur.sudoer /etc/sudoers.d/pikaur
+COPY pacman.sudoer  /etc/sudoers.d/pacman
+COPY tomato.sudoer  /etc/sudoers.d/tomato
+COPY pikaur.sudoer  /etc/sudoers.d/pikaur
 
 # Everything from now is done from the tomato home dir with the tomato user.
 USER tomato
@@ -58,13 +59,12 @@ WORKDIR /home/tomato
 #       dependencies but some pikaur's scripts are trigged too soon.
 ADD --chown=tomato \
     https://aur.archlinux.org/cgit/aur.git/snapshot/pikaur.tar.gz .
-RUN tar -xf pikaur.tar.gz                                              && \
-    cd pikaur                                                          && \
-    sudo pacman -Sy --noconfirm --noprogressbar archlinux-keyring      && \
-    sudo pacman -Syuu --noconfirm --noprogressbar --needed --asdeps python-commonmark && \
-    makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps  && \
-    sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*  && \
-    sudo pacman -Scc --noconfirm --noprogressbar                       && \
+RUN tar -xf pikaur.tar.gz                                                   && \
+    cd pikaur                                                               && \
+    sudo pacman -Sy --noconfirm --noprogressbar archlinux-keyring           && \
+    makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps       && \
+    sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*       && \
+    sudo pacman -Scc --noconfirm --noprogressbar                            && \
     cd && rm -rf pikaur*
 
 COPY --chown=tomato pikaur.conf .config/pikaur.conf
@@ -80,6 +80,23 @@ COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 #       otherwise we will enable the systemd user feature which doesn't work
 #       within a docker image.
 RUN sudo -n -- /home/tomato/tomato.sh fixup
+
+# Patch the ArchLinux's repose to support the XDATA pkg attribute
+# See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/issues/1
+# See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/blob/main/PKGBUILD?ref_type=heads
+#
+# If a new version of repose is available, it will be updated at the next
+# tomato un.
+#
+# TODO: remove when no longer requiered.
+RUN mkdir repose
+COPY patch/repose.PKGBUILD repose/PKGBUILD
+COPY patch/repose.0001_pacman61.patch repose/001_pacman61.patch
+RUN cd repose && \
+    pikaur --needed --noprogressbar --noconfirm -P PKGBUILD && \
+    sudo pacman -Scc --noconfirm --noprogressbar            && \
+    cd && rm -rf repose
+
 
 # Setup EDITOR
 # Note: as the editor is a volatile argument, set it up last to avoid
