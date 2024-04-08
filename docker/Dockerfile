@@ -85,12 +85,12 @@ COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 #       within a docker image.
 RUN sudo -n -- /home/tomato/tomato.sh fixup
 
-# Patch the ArchLinux's repose to support the XDATA pkg attribute
-# See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/issues/1
-# See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/blob/main/PKGBUILD?ref_type=heads
-#
-# If a new version of repose is available, it will be updated at the next
-# tomato un.
+# Patch repose
+# Note: ArchLinux's repose does not support the XDATA pkg attribute, yet.
+# 	See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/issues/1
+# 	See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/blob/main/PKGBUILD?ref_type=heads
+# 	If a new version of repose is available, it will be updated at the next
+# 	tomato un.
 #
 # TODO: remove when no longer requiered.
 RUN mkdir repose
