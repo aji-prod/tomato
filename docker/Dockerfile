@@ -27,6 +27,7 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
       pacman -U  --noconfirm --noprogressbar /var/cache/pacman/pkg/archlinux-keyring-* ) && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
     pacman -S    --noconfirm --noprogressbar --needed python               \
+						      base-devel           \
                                                       pacman-contrib    && \
     pacman -Scc --noconfirm --noprogressbar
 # Note: python package is a prerequist for pikaur, we are installing it
@@ -36,6 +37,9 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 #       the packages files within the repository directory.
 #       -- It was removed from here as the ArchLinu's repose is not yet
 #          patched to support the XDATA package attribute.
+#
+# Note: base-devel is required to build the AUR package, be sure that one
+#       is installed, the base-devel image may skip it.
 #
 # Note: pacman-contrib is only required for paccache, to clean up the
 #       the old packages within the tomato repository.
