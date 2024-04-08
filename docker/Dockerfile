@@ -28,6 +28,7 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
     pacman -Suu  --noconfirm --noprogressbar --needed                   && \
     pacman -S    --noconfirm --noprogressbar --needed python               \
                                                       repose               \
+						      base-devel           \
                                                       pacman-contrib    && \
     pacman -Scc --noconfirm --noprogressbar
 # Note: python package is a prerequist for pikaur, we are installing it
@@ -35,6 +36,9 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 #
 # Note: repose is used by the tomato.sh script, to update cleanly
 #       the packages files within the repository directory.
+#
+# Note: base-devel is required to build the AUR package, be sure that one
+#       is installed, the base-devel image may skip it.
 #
 # Note: pacman-contrib is only required for paccache, to clean up the
 #       the old packages within the tomato repository.
