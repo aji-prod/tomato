@@ -243,7 +243,7 @@ def fetch_latest_tomato_release():
     )
     filename = pkg["name"]
     size = pkg["size"]
-    url = pkg["url"]
+    url = pkg["browser_download_url"]
 
     return TomatoRelease(name, version, filename, size, url)
 
