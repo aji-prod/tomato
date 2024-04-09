@@ -97,8 +97,8 @@ RUN mkdir repose
 COPY patch/repose.PKGBUILD repose/PKGBUILD
 COPY patch/repose.0001_pacman61.patch repose/001_pacman61.patch
 RUN cd repose && \
-    pikaur --needed --noprogressbar --noconfirm -P PKGBUILD && \
-    sudo pacman -Scc --noconfirm --noprogressbar            && \
+    pikaur --needed --noprogressbar --noconfirm --edit --install -P PKGBUILD && \
+    sudo pacman -Scc --noconfirm --noprogressbar                             && \
     cd && rm -rf repose
 
 
