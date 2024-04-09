@@ -6,7 +6,7 @@ readonly VERSION
 
 TOMATO_NAME="${TOMATO_NAME:-tomato}"
 TOMATO_PKGDIR="${TOMATO_PKGDIR:-/var/pkg/tomato}"
-TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato}"
+TOMATO_IMGDIR="${TOMATO_IMGDIR:-/usr/share/tomato/image}"
 TOMATO_MIRRORLIST="${TOMATO_MIRRORLIST:-/etc/pacman.d/mirrorlist}"
 TOMATO_MAKEPKGCONF="${TOMATO_MAKEPKGCONF}"
 TOMATO_PKGCACHEDIR="${TOMATO_PKGCACHEDIR:-/var/cache/pacman/pkg}"

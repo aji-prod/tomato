@@ -21,7 +21,7 @@ package() {
 	install -Dm755 tomato "$pkgdir/usr/bin/tomato"
 	install -Dm644 tomato.conf "$pkgdir/etc/tomato.conf"
 	for dockfile in $(cd ./docker && ls -A ./*); do
-		install -Dm644 docker/$dockfile "$pkgdir/usr/share/$pkgname/$dockfile"
+		install -Dm644 docker/$dockfile "$pkgdir/usr/share/$pkgname/image/$dockfile"
 	done
 	for hookfile in $(cd ./pacman && ls ./*); do
 		install -Dm644 pacman/$hookfile "$pkgdir/usr/share/libalpm/hooks/$hookfile"
