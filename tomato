@@ -1,6 +1,6 @@
 #!/bin/sh
 NAME=$(basename ${0:-tomato})
-VERSION=0.8.1
+VERSION=0.8.2
 readonly NAME
 readonly VERSION
 

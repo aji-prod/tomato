@@ -29,7 +29,7 @@ operations:
   tomato list    [all|status|split]
                                 # list maintained packages;
   tomato search   <package(s)>  # search an AUR package;
-  tomato version [number]       # show version 0.8.1;
+  tomato version [number]       # show version 0.8.2;
   tomato (usage|help)           # this help message.
 
   tomato -Syu                   # or any other short variant (-Syuu, -Suy,
@@ -47,7 +47,7 @@ options:
   tomato --remote-update        # update tomato from the remote pre-built
                                 # package.
 
-  Tomato v0.8.1
+  Tomato v0.8.2
 ```
 
 ## Installation
@@ -59,8 +59,8 @@ options:
 [tomato] provides a [prebuilt package] with no other dependencies than [pacman] and can be installed with a [pacman install command]:
 
 ```sh
-curl -L https://github.com/aji-prod/tomato/releases/download/v0.8.1/tomato-0.8.1-1-any.pkg.tar.zst > tomato-0.8.1-1-any.pkg.tar.zst
-pacman -U ./tomato-0.8.1-1-any.pkg.tar.zst
+curl -L https://github.com/aji-prod/tomato/releases/download/v0.8.2/tomato-0.8.2-1-any.pkg.tar.zst > tomato-0.8.2-1-any.pkg.tar.zst
+pacman -U ./tomato-0.8.2-1-any.pkg.tar.zst
 ```
 
 #### As an [AUR package]
@@ -70,10 +70,10 @@ The [AUR package] can be installed with [makepkg] or any other [AUR helper].
 #### From sources
 
 ```sh
-git clone --branch v0.8.1 --depth 1 https://github.com/aji-prod/tomato/ tomato  
+git clone --branch v0.8.2 --depth 1 https://github.com/aji-prod/tomato/ tomato  
 cd tomato  
 make pkg  
-pacman -U pkg/tomato-0.8.1-1-any.pkg.tar.zst
+pacman -U pkg/tomato-0.8.2-1-any.pkg.tar.zst
 ```
 
 ### Enable [tomato]  [pacman repository]
@@ -354,7 +354,7 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [pacman.conf]: https://wiki.archlinux.org/index.php/Pacman#Configuration
 [pacman]: https://wiki.archlinux.org/index.php/Pacman
 [pikaur]: https://github.com/actionless/pikaur
-[prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.8.1/tomato-0.8.1-1-any.pkg.tar.zst
+[prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.8.2/tomato-0.8.2-1-any.pkg.tar.zst
 [repose]: https://github.com/vodik/repose
 [split package]: https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5#PACKAGE_SPLITTING
 [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
