@@ -12,7 +12,7 @@ license=('GPL')
 
 depends=('pacman' 'libarchive' 'gnupg')
 makedepends=('ragel')
-checkdepends=('python-pytest' 'python-cffi' 'python-pytest-xdist')
+checkdepends=('python-setuptools' 'python-pytest' 'python-cffi' 'python-pytest-xdist')
 
 source=("repose-$pkgver.tar.gz::https://github.com/vodik/repose/archive/$pkgver.tar.gz"
 "0001_pacman61.patch::https://gitlab.archlinux.org/archlinux/packaging/packages/repose/uploads/680081e7758cd85b0683b2963e2034ef/0001_pacman61.patch")
