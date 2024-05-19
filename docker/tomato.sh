@@ -292,8 +292,11 @@ _upgrade(){
 	# do not fail if pikaur is not upgradable
 	(_aur -S   $AURFLAGS pikaur || true)      &&
 	_aur -Syuu $AURFLAGS                      &&
+
+	local ret=$?
 	# cleanup pikaur build for futher package registration
 	_rmglob "$PKGDIR" "$PKGGLOB"
+	return $ret
 }
 
 # -- Packages List
