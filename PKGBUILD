@@ -1,6 +1,6 @@
 # Maintainer : aji <43468383+aji-prod@users.noreply.github.com>
 pkgname=tomato
-pkgver=0.8.2
+pkgver=0.8.3
 pkgrel=1
 pkgdesc="AUR local repository manager"
 arch=('any')
@@ -14,6 +14,10 @@ source=(
 
 depends=(
 	'docker'
+)
+
+optdepends=(
+	'python: --remote-update option support'
 )
 
 package() {
