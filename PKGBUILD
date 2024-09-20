@@ -1,7 +1,7 @@
 # Maintainer : aji <43468383+aji-prod@users.noreply.github.com>
 pkgname=tomato
 pkgver=0.8.3
-pkgrel=1
+pkgrel=2
 pkgdesc="AUR local repository manager"
 arch=('any')
 url="https://github.com/aji-prod/tomato"
@@ -36,4 +36,5 @@ package() {
 	install -Dm644 "systemd/tomato-update.conf" "$pkgdir/usr/share/tomato/tomato-update.conf"
 	install -Dm644 "complete/tomato.bash" "$pkgdir/usr/share/bash-completion/completions/tomato"
 	mkdir -p -m755 "$pkgdir/var/pkg/tomato"
+	chown :alpm -R "$pkgdir/var/pkg/tomato"
 }
