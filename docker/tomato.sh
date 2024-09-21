@@ -280,6 +280,32 @@ _volfile(){
 	fi
 }
 
+_aurconf() {
+	local defaults
+	defaults=0
+
+	for arg in $@;
+	do
+		case $arg in
+			defaults)
+				defaults=1
+				break;;
+			*)
+				;;
+		esac
+	done
+
+	if test ${defaults} -eq 1;
+	then
+		# execute a dummy command to force pikaur to write the
+		# default pikaur.conf file
+		_aur -S _ --pikaur-config "/tmp/pikaur.conf" 1>&2  2>/dev/null
+		cat "/tmp/pikaur.conf"
+	else
+		cat "$(echo ~tomato)/.config/pikaur.conf"
+	fi
+}
+
 # -- Environment
 _mirrorlist(){
 	_volfile "${MIRRORLIST}" "/etc/pacman.d/" 
@@ -663,6 +689,9 @@ main(){
 			;;
 		editor) # not documented
 			shift; _editor $@
+			;;
+		aurconf) # not documented
+			shift; _aurconf $@
 			;;
 		status) # not documented - shortcut for `list status`
 			list $@
