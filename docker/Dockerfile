@@ -66,6 +66,7 @@ ADD --chown=tomato \
 RUN tar -xf pikaur.tar.gz                                                   && \
     cd pikaur                                                               && \
     sudo pacman -Sy --noconfirm --noprogressbar archlinux-keyring           && \
+    sudo pacman -Su --noconfirm --noprogressbar                             && \
     makepkg --noconfirm --nocolor --noprogressbar --syncdeps --rmdeps       && \
     sudo pacman -U --noconfirm --noprogressbar pikaur-*-any.pkg.tar.*       && \
     sudo pacman -Scc --noconfirm --noprogressbar                            && \
