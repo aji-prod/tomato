@@ -9,7 +9,7 @@ vi:wrap:linebreak:nolist:spell:spelllang=en:
 
 ## Overview
 
-[tomato] builds a selection of [AUR packages] with [pikaur] in a [Docker] image, and publishes them through [repose] to a local [pacman repository] named _tomato_.
+[tomato] builds a selection of [AUR packages] with [pikaur] in a [Docker] image, and publishes them through [pacman] tooling to a local [pacman repository] named _tomato_.
 
 As such [tomato] is not a [pacman wrapper], it is more an indirect [AUR helper]. It let the host system clean of build's dependencies, like [base-devel].
 
@@ -311,7 +311,6 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 
 [Docker] – [Apache 2.0](https://github.com/moby/moby/blob/master/LICENSE);
 [pikaur] – [GPLv3](https://github.com/actionless/pikaur/blob/master/LICENSE);
-[repose] – [GPLv2](https://github.com/vodik/repose/blob/master/COPYING);
 [tomato] – [GPLv3](https://github.com/aji-prod/tomato/blob/master/LICENSE).
 
 
@@ -355,7 +354,6 @@ Or you can try to repeat indefinitely and rapidly _"automate AUR"_.
 [pacman]: https://wiki.archlinux.org/index.php/Pacman
 [pikaur]: https://github.com/actionless/pikaur
 [prebuilt package]: https://github.com/aji-prod/tomato/releases/download/v0.8.4/tomato-0.8.4-1-any.pkg.tar.zst
-[repose]: https://github.com/vodik/repose
 [split package]: https://jlk.fjfi.cvut.cz/arch/manpages/man/PKGBUILD.5#PACKAGE_SPLITTING
 [systemd timers]: https://wiki.archlinux.org/index.php/Systemd#Timers
 [systemd]: https://wiki.archlinux.org/index.php/Systemd
