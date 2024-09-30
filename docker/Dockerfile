@@ -33,11 +33,6 @@ RUN echo ARG TOMATO_MIRROR=\"${TOMATO_MIRROR}\"                         && \
 # Note: python package is a prerequist for pikaur, we are installing it
 #       as soon as possible.
 #
-# Note: repose is used by the tomato.sh script, to update cleanly
-#       the packages files within the repository directory.
-#       -- It was removed from here as the ArchLinu's repose is not yet
-#          patched to support the XDATA package attribute.
-#
 # Note: base-devel is required to build the AUR package, be sure that one
 #       is installed, the base-devel image may skip it.
 #
@@ -85,23 +80,6 @@ COPY --chown=tomato makepkg.conf .config/pacman/makepkg.conf
 #       otherwise we will enable the systemd user feature which doesn't work
 #       within a docker image.
 RUN sudo -n -- /home/tomato/tomato.sh fixup
-
-# Patch repose
-# Note: ArchLinux's repose does not support the XDATA pkg attribute, yet.
-# 	See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/issues/1
-# 	See https://gitlab.archlinux.org/archlinux/packaging/packages/repose/-/blob/main/PKGBUILD?ref_type=heads
-# 	If a new version of repose is available, it will be updated at the next
-# 	tomato un.
-#
-# TODO: remove when no longer requiered.
-RUN mkdir repose
-COPY repose.PKGBUILD repose/PKGBUILD
-COPY repose.0001_pacman61.patch repose/001_pacman61.patch
-RUN cd repose && \
-    pikaur --needed --noprogressbar --noconfirm --edit --install -P PKGBUILD && \
-    sudo pacman -Scc --noconfirm --noprogressbar                             && \
-    cd && rm -rf repose
-
 
 # Setup EDITOR
 # Note: as the editor is a volatile argument, set it up last to avoid
