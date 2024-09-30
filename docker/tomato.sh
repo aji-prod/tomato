@@ -466,9 +466,9 @@ _statusdb(){
 
 		aurlog=$(_aur -Si --aur --name-only "${pkgname}")
 		aurscm=$(echo ${pkgname}       | grep -o -E -e '-(git|hg|svn|bzr)$')
-		aurversion=$(echo ${aurlog}    | grep Version     | awk -F ': ' '{printf $2}')
-		auroutofdate=$(echo ${aurlog}  | grep Out-of-date | awk -F ': ' '{printf $2}')
-		aurmaintainer=$(echo ${aurlog} | grep Maintainer  | awk -F ': ' '{printf $2}')
+		aurversion=$(echo ${aurlog}    | grep -m 1 '^Version'     | awk -F ' : ' '{printf $2}')
+		auroutofdate=$(echo ${aurlog}  | grep -m 1 '^Out-of-date' | awk -F ' : ' '{printf $2}')
+		aurmaintainer=$(echo ${aurlog} | grep -m 1 '^Maintainer'  | awk -F ' : ' '{printf $2}')
 		
 		pkgstatus="" # Up-to-date
 		if test -z "${aurversion}";
