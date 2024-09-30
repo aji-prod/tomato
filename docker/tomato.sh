@@ -5,8 +5,9 @@ VERSION=0.8.4
 
 REPODIR="${REPODIR:-/var/pkg/${NAME}}"
 REPOLST="${REPODIR}/${NAME}.pkglist"
-REPODB="${NAME}"
+REPODB="${NAME}.db.tar.gz"
 KEYSLST="${REPODIR}/${NAME}.gpglist"
+REPOCFG="/tmp/${NAME}.pacman.conf"
 
 PKGDIR="$(echo ~tomato)/.cache/pikaur/pkg"
 PKGGLOB=*.pkg.tar.*
@@ -306,6 +307,19 @@ _aurconf() {
 	fi
 }
 
+_pacconf() {
+	test -f "${REPOCFG}" || ( \
+	cat >> "${REPOCFG}" <<EOF
+
+[${NAME}]
+SigLevel = Optional TrustAll
+Server = file://${REPODIR}
+Usage = Sync Search
+
+EOF
+	)
+}
+
 # -- Environment
 _mirrorlist(){
 	_volfile "${MIRRORLIST}" "/etc/pacman.d/" 
@@ -411,28 +425,30 @@ _delpkgs(){
 
 # -- Database
 _updatedb(){
-	repose --files             \
-	       --gzip              \
-	       --root="${REPODIR}" \
-	       --pool="${REPODIR}" \
-	       "${REPODB}"
+	ls -1 "${REPODIR}/"$PKGGLOB      |
+	xargs repo-add                   \
+		--new                    \
+		--remove                 \
+		--prevent-downgrade      \
+		--quiet                  \
+		--                       \
+		"${REPODIR}/${REPODB}"
 }
 
 _removedb(){
-	repose --files             \
-	       --gzip              \
-	       --root="${REPODIR}" \
-	       --pool="${REPODIR}" \
-	       --drop              \
-	       "${REPODB}" -- $@
+	repo-remove -- "${REPODIR}/${REPODB}" $@
 }
 
 _listdb(){
-	test -f "${REPODIR}/${REPODB}.db" &&
-	repose --root="${REPODIR}" \
-	       --pool="${REPODIR}" \
-	       --list              \
-	       "${REPODB}"
+	local dbpath
+	dbpath="${REPOCFG}.d"
+
+	test -f "${REPODIR}/${REPODB}"                                            && \
+	_pacconf                                                                  && \
+	(test -d "${dbpath}" || mkdir -- "${dbpath}")                             && \
+	pacman -Sy --config "${REPOCFG}" --dbpath "${dbpath}" --quiet > /dev/null && \
+	pacman -S  --config "${REPOCFG}" --dbpath "${dbpath}" --list "${NAME}"     | \
+	cut -d' ' -f 2,3
 }
 
 _statusdb(){
@@ -501,7 +517,6 @@ _reportdb(){
 _version(){
 	pacman=$(/usr/bin/pacman -Q pacman)
 	pikaur=$(/usr/bin/pacman -Q pikaur)
-	repose=$(/usr/bin/pacman -Q repose)
 	cat << EOF
 
                000000000                
@@ -529,7 +544,6 @@ _version(){
           0000       1   0000           
               00000000000             ${pacman^}
 	                              ${pikaur^}
-				      ${repose^}
 
 EOF
 }
@@ -581,7 +595,6 @@ version(){
 			/usr/bin/uname    -a &&
 			/usr/bin/pacman   -V &&
 			_aur              -V &&
-			/usr/bin/repose   -V &&
 			_version;;
 		*)
 			_version;;
@@ -591,7 +604,8 @@ version(){
 list(){
 	case "$1" in
 		all)
-			_listdb;;
+			_listdb | \
+			grep --color=auto ' .*';;
 		status)
 			_reportdb;;
 		split)
@@ -692,6 +706,9 @@ main(){
 			;;
 		aurconf) # not documented
 			shift; _aurconf $@
+			;;
+		updatedb) # not ducment
+			_updatedb
 			;;
 		status) # not documented - shortcut for `list status`
 			list $@
