@@ -436,6 +436,13 @@ _updatedb(){
 }
 
 _removedb(){
+
+	if test ! -f "${REPODIR}/${REPODB}"  -a -f "${REPODIR}/${NAME}.db";
+	then
+		_hint "Refreshing database before removing $@..."
+		_updatedb
+	fi
+
 	repo-remove -- "${REPODIR}/${REPODB}" $@
 }
 
@@ -443,7 +450,7 @@ _listdb(){
 	local dbpath
 	dbpath="${REPOCFG}.d"
 
-	test -f "${REPODIR}/${REPODB}"                                            && \
+	test -f "${REPODIR}/${REPODB}" -o -f "${REPODIR}/${NAME}.db"              && \
 	_pacconf                                                                  && \
 	(test -d "${dbpath}" || mkdir -- "${dbpath}")                             && \
 	pacman -Sy --config "${REPOCFG}" --dbpath "${dbpath}" --quiet > /dev/null && \
