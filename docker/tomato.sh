@@ -410,8 +410,12 @@ _makepkgs(){
 	return $allbuilt
 }
 
+_globpkgs(){
+	ls -1 "$PKGDIR/"$PKGGLOB
+}
+
 _pushpkgs(){
-	ls -1 "$PKGDIR/"$PKGGLOB |
+	_globpkgs |
 	xargs cp --no-clobber --target-directory="$REPODIR/" --
 }
 
@@ -425,7 +429,7 @@ _delpkgs(){
 
 # -- Database
 _updatedb(){
-	ls -1 "${REPODIR}/"$PKGGLOB      |
+	_globpkgs                        |
 	xargs repo-add                   \
 		--new                    \
 		--remove                 \
@@ -714,7 +718,7 @@ main(){
 		aurconf) # not documented
 			shift; _aurconf $@
 			;;
-		updatedb) # not ducment
+		updatedb) # not documented
 			_updatedb
 			;;
 		status) # not documented - shortcut for `list status`
