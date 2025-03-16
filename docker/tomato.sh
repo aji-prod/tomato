@@ -416,7 +416,7 @@ _globpkgs(){
 
 _pushpkgs(){
 	_globpkgs |
-	xargs cp --no-clobber --target-directory="$REPODIR/" --
+	xargs cp --no-clobber --target-directory="${REPODIR}/" --
 }
 
 _cleanpkgs(){
@@ -550,7 +550,7 @@ _version(){
   0   1      1       1      1     100   
    0  1      1       1      1     00    
     001      1       1      1    00   ${NAME^} v${VERSION}
-      00     1       1      1   00    Copyright (C) 2018-2024 'aji'
+      00     1       1      1   00    Copyright (C) 2018-2025 'aji'
         00   1       1      0000      Licensed under GPLv3
           0000       1   0000           
               00000000000             ${pacman^}
