@@ -1,6 +1,6 @@
 <!--
 vi:wrap:linebreak:nolist:spell:spelllang=en:
---
+-->
 
 # tomato
 
